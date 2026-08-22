@@ -59,7 +59,7 @@ pkgs.mkShell {
 
   shellHook = ''
     echo ""
-    echo "❄️  NixOS Dotfiles development environment"
+    echo "❄️  nix-config development environment"
     echo ""
 
     echo "Available tools:"

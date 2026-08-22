@@ -1,62 +1,103 @@
-# ❄️ Dotfiles — NixOS + Home Manager
+# ❄️ nix-config — NixOS + Home Manager
 
 > Configuración declarativa, reproducible y segura para estaciones de trabajo NixOS.
 
 ## 🖥️ Hosts
 
-| Host | Tipo | Perfil | `specialArgs` |
-|---|---|---|---|
-| `pc-wwd` | Escritorio (multi-monitor) | `desktop` | `isLaptop = false` |
-| `pc-portatil` | Portátil | `laptop` | `isLaptop = true` |
+| Host | Tipo | Perfil NixOS | Perfil Home | `specialArgs` |
+|---|---|---|---|---|
+| `pc-wwd` | Escritorio (multi-monitor) | `desktop-nixos` | `desktop-home` | `isLaptop = false` |
+| `pc-portatil` | Portátil | `laptop-nixos` | `laptop-home` | `isLaptop = true` |
 
 ## 📁 Estructura
 
 ```
-dotfiles/
+nix-config/
 ├── flake.nix                           # Punto de entrada: inputs, mkHost, outputs
-├── install.sh                          # Instalación desde ISO (disko + nixos-install)
+├─  ├── outputs.nix                     # Factory de hosts (mkHost), specialArgs, Home Manager
+│   ├── devshell.nix                    # Entorno de desarrollo (alejandra, statix, deadnix...)
+│   └── packages.nix                    # Paquetes personalizados del flake
+├── Makefile                            # Build y deploy vía make (nix develop)
 ├── .clinerules                         # Reglas de expertise (Nix, AD, Sysadmin)
 ├── .gitlab-ci.yml                      # CI/CD pipeline (alejandra, statix, flake check, build)
 ├── .editorconfig                       # Estilo de código consistente
 ├── .envrc                              # direnv (auto-devshell)
+├── .sops.yaml                          # Configuración de sops-nix (AGE keys)
+├── .gitignore
+├── commitlint.config.js                # Reglas de commitlint
+├── prek.toml                           # Configuración de prek (git hooks)
 ├── hosts/                              # Configuraciones específicas por máquina
 │   ├── pc-wwd/
-│   │   ├── configuration.nix           #   Imports: common-nixos + desktop
-│   │   ├── home.nix                    #   Imports: common-home + desktop
+│   │   ├── configuration.nix           #   Imports: common-nixos + desktop-nixos
+│   │   ├── home.nix                    #   Imports: common-home + desktop-home
 │   │   ├── disk.nix                    #   Particionado (disko)
 │   │   └── hardware-configuration.nix  #   Auto-generado, no editar manualmente
 │   └── pc-portatil/
-│       ├── configuration.nix           #   Imports: common-nixos + laptop
-│       ├── home.nix                    #   Imports: common-home + laptop
+│       ├── configuration.nix           #   Imports: common-nixos + laptop-nixos
+│       ├── home.nix                    #   Imports: common-home + laptop-home
 │       ├── disk.nix
 │       └── hardware-configuration.nix
 ├── modules/
 │   ├── profiles/                       # Perfiles reutilizables por tipo de host
 │   │   ├── common-nixos.nix            #   NixOS base (core, desktop, podman, secrets, hardening)
 │   │   ├── common-home.nix             #   Home Manager base (shell, editores, navegadores)
-│   │   ├── desktop.nix                 #   Extras escritorio (libvirt, waydroid, rclone, multi-monitor)
-│   │   └── laptop.nix                  #   Extras portátil (wifi, tlp, bluetooth, TPM2, eDP-1)
+│   │   ├── desktop-nixos.nix           #   Extras NixOS escritorio (GitLab Runner)
+│   │   ├── desktop-home.nix            #   Extras Home escritorio (rclone, multi-monitor)
+│   │   ├── laptop-nixos.nix            #   Extras NixOS portátil (wifi, tlp, bluetooth)
+│   │   └── laptop-home.nix             #   Extras Home portátil (display eDP-1)
 │   ├── nixos/                          # Módulos NixOS (system-level)
-│   │   ├── core/                       #   locale, user, nix-settings, security, wifi
-│   │   ├── core/security-cis.nix       #   Hardening CIS Benchmark (5 flags)
-│   │   ├── core/luks-tpm.nix           #   LUKS + TPM2 auto-unlock (portátiles)
-│   │   ├── desktop/                    #   Sway compositor
+│   │   ├── default.nix
+│   │   ├── core/                       #   locale, user, nix-settings, security, wifi, luks-tpm
+│   │   │   ├── default.nix
+│   │   │   ├── locale.nix
+│   │   │   ├── luks-tpm.nix            #     LUKS + TPM2 auto-unlock (portátiles)
+│   │   │   ├── nix-settings.nix
+│   │   │   ├── security-cis.nix        #     Hardening CIS Benchmark (5 flags)
+│   │   │   ├── security.nix
+│   │   │   ├── user.nix
+│   │   │   └── wifi.nix
+│   │   ├── desktop/                    #   Sway + Niri compositors
+│   │   │   ├── default.nix
+│   │   │   ├── dcal.nix
+│   │   │   ├── niri/
+│   │   │   └── sway/
 │   │   ├── secrets/                    #   sops-nix (AGE encryption)
-│   │   └── virtualisation/            #   podman, libvirt, waydroid, android, docker
+│   │   ├── services/                   #   gitlab-runner
+│   │   └── virtualisation/             #   podman, libvirt, waydroid, android, docker
+│   │       ├── android.nix
+│   │       ├── docker.nix
+│   │       ├── libvirt.nix
+│   │       ├── podman.nix
+│   │       └── waydroid.nix
 │   └── home/                           # Módulos Home Manager (user-level)
-│       ├── desktop/                    #   Sway + DankMaterialShell + Winapps
+│       ├── default.nix
+│       ├── brave.nix / chrome.nix / firefox.nix
+│       ├── danksearch.nix / dcal.nix
+│       ├── fzf.nix / git.nix / session.nix
+│       ├── vscode.nix / zed.nix
+│       ├── desktop/                    #   Sway + DankMaterialShell + Niri + Winapps
+│       │   ├── default.nix
+│       │   ├── dank-material-shell/
+│       │   ├── niri/
+│       │   ├── sway/
+│       │   └── winapps/
 │       ├── packages/                   #   cli, apps, dev, wayland, fonts
+│       │   ├── default.nix
+│       │   ├── fonts.nix
+│       │   ├── apps/                   #     develop, graphics, media, office, torrent
+│       │   ├── cli/                    #     core, network
+│       │   ├── dev/                    #     compilers, containers, lsp
+│       │   └── wayland/                #     utils
 │       ├── services/                   #   rclone-google-drive
 │       ├── zsh/                        #   Shell + p10k + plugins
 │       ├── wezterm/                    #   Terminal emulator
 │       ├── zellij/                     #   Terminal multiplexer
 │       ├── nvim/                       #   Neovim (lazy.nvim)
-│       ├── git.nix
-│       ├── fzf.nix
-│       ├── brave.nix / firefox.nix
-│       ├── vscode.nix / zed.nix
-│       ├── danksearch.nix
-│       └── session.nix
+│       └── ...
+├── scripts/
+│   ├── install.sh                      # Instalación desde ISO (disko + nixos-install)
+│   ├── validate-commit-msg             # Validación de mensajes de commit
+│   └── ci/                             # Scripts de CI (check-branch, check-commits)
 └── secrets/                            # Secretos cifrados (no se commitean sin cifrar)
     ├── pc-wwd.yaml                     #   sops-nix AGE encrypted
     └── pc-portatil.yaml
@@ -66,21 +107,35 @@ dotfiles/
 
 ### Perfiles (DRY)
 
-Todo lo compartido entre hosts vive en `modules/profiles/`. Los hosts solo importan 2 archivos:
+Todo lo compartido entre hosts vive en `modules/profiles/`. Los hosts solo importan 2 archivos (uno para NixOS y otro para Home Manager):
 
 ```nix
-# pc-wwd: escritorio con virtualización extendida
+# hosts/pc-wwd/configuration.nix — escritorio con virtualización extendida
 imports = [
   ./hardware-configuration.nix
   ../../modules/profiles/common-nixos.nix
-  ../../modules/profiles/desktop.nix
+  ../../modules/profiles/desktop-nixos.nix
 ];
 
-# pc-portatil: portátil con wifi, tlp, bluetooth
+# hosts/pc-wwd/home.nix — Home Manager del escritorio
+imports = [
+  ../../modules/profiles/common-home.nix
+  ../../modules/profiles/desktop-home.nix
+];
+```
+
+```nix
+# hosts/pc-portatil/configuration.nix — portátil con wifi, tlp, bluetooth
 imports = [
   ./hardware-configuration.nix
   ../../modules/profiles/common-nixos.nix
-  ../../modules/profiles/laptop.nix
+  ../../modules/profiles/laptop-nixos.nix
+];
+
+# hosts/pc-portatil/home.nix — Home Manager del portátil
+imports = [
+  ../../modules/profiles/common-home.nix
+  ../../modules/profiles/laptop-home.nix
 ];
 ```
 
@@ -89,8 +144,13 @@ imports = [
 Cada host recibe banderas en tiempo de build que los módulos usan para activar/desactivar servicios condicionalmente:
 
 ```nix
-# flake.nix
-mkHost = hostname: isLaptop: ...;
+# flake/outputs.nix
+mkHost = hostname: isLaptop:
+  inputs.nixpkgs.lib.nixosSystem {
+    inherit system;
+    specialArgs = { inherit inputs username system hostname isLaptop; };
+    ...
+  };
 
 nixosConfigurations = {
   pc-wwd = mkHost "pc-wwd" false;       # isLaptop = false
@@ -101,7 +161,7 @@ nixosConfigurations = {
 | Bandera | Efecto |
 |---|---|
 | `isLaptop = true` | Activa `tlp` (batería), `bluetooth`, `fail2ban`, `wifi`, TPM2 auto-unlock |
-| `isLaptop = false` | Activa `auditd`, `libvirt`, `waydroid`, `android`, kernel `lockdown=confidentiality` |
+| `isLaptop = false` | Activa `auditd`, kernel `lockdown=confidentiality` |
 | `hostname` | Configura displays de Sway por host |
 
 ### Seguridad (Security-First)
@@ -133,7 +193,7 @@ stages: [format-lint, check, build]
 2. Ejecuta el script de instalación:
 
 ```bash
-bash <(curl -sSL https://gitlab.com/workwithdevia-group/desktop/docfiles/-/raw/main/install.sh)
+bash <(curl -sSL https://github.com/work-with-devia/desktop-nix-config/-/raw/main/install.sh)
 ```
 
 3. Ingresa el nombre del host (`pc-wwd` o `pc-portatil`).
@@ -153,7 +213,7 @@ El script:
 ### Entorno de desarrollo
 
 ```bash
-cd dotfiles     # direnv activa el devshell automáticamente
+cd nix-config   # direnv activa el devshell automáticamente
 # o manualmente:
 nix develop
 ```
@@ -218,22 +278,18 @@ make develop           # Entra en nix develop
 |---|---|
 | **OS** | NixOS (unstable) |
 | **Gestor de configuración** | Home Manager |
-| **Compositor** | Sway (Wayland) + DankMaterialShell |
+| **Compositor** | Sway (Wayland) + DankMaterialShell + Niri |
 | **Shell** | Zsh + Powerlevel10k + plugins |
 | **Terminal** | Wezterm + Zellij |
-| **Editor** | Neovim (lazy.nvim) + VS Code |
-| **Navegador** | Brave + Firefox |
-| **Virtualización** | Podman, libvirt, Waydroid |
+| **Editor** | Neovim (lazy.nvim) + VS Code + Zed |
+| **Navegador** | Brave + Chrome + Firefox |
+| **Virtualización** | Podman, libvirt, Waydroid, Android, Docker |
 | **Secretos** | sops-nix (AGE encryption) |
 | **Backups** | rclone → Google Drive |
-| **CI/CD** | GitLab CI |
+| **CI/CD** | GitLab CI + GitLab Runner |
 | **Hardening** | AppArmor, auditd, fail2ban, kernel lockdown, firewall |
 
-## 🗺️ Roadmap
-
-Ver [`ROADMAP.md`](ROADMAP.md) para el plan completo de mejoras, estado actual, y próximas fases de implementación.
-
-## 📚 Referencias
+##  Referencias
 
 - [NixOS Manual](https://nixos.org/manual/nixos/stable/)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
