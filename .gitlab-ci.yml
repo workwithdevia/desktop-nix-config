@@ -115,7 +115,7 @@ deploy-pc-wwd:
         --remain-after-exit \
         --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
         /run/current-system/sw/bin/nixos-rebuild switch \
-        --flake .#pc-wwd
+        --flake $CI_PROJECT_DIR#pc-wwd
 
 
 deploy-pc-portatil:
@@ -144,4 +144,4 @@ deploy-pc-portatil:
         --remain-after-exit \
         --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
         /run/current-system/sw/bin/nixos-rebuild switch \
-        --flake .#pc-portatil
+        --flake $CI_PROJECT_DIR#pc-portatil
