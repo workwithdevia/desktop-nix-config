@@ -109,15 +109,13 @@ deploy-pc-wwd:
     - when: never
 
   script:
-    - cd /etc/nixos
-    - git pull origin main
     - |
       systemd-run \
         --unit=nixos-deploy-ci-$CI_JOB_ID \
         --remain-after-exit \
         --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
         /run/current-system/sw/bin/nixos-rebuild switch \
-        --flake /etc/nixos#pc-wwd
+        --flake .#pc-wwd
 
 
 deploy-pc-portatil:
@@ -140,12 +138,10 @@ deploy-pc-portatil:
     - when: never
 
   script:
-    - cd /etc/nixos
-    - git pull origin main
     - |
       systemd-run \
         --unit=nixos-deploy-ci-$CI_JOB_ID \
         --remain-after-exit \
         --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
         /run/current-system/sw/bin/nixos-rebuild switch \
-        --flake /etc/nixos#pc-portatil
+        --flake .#pc-portatil
