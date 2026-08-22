@@ -4,6 +4,8 @@
 
 ## 🖥️ Hosts
 
+> 📍 ¿Buscas qué mejorar? Consulta el **[roadmap de mejoras](ROADMAP.md)**.
+
 | Host | Tipo | Perfil NixOS | Perfil Home | `specialArgs` |
 |---|---|---|---|---|
 | `pc-wwd` | Escritorio (multi-monitor) | `desktop-nixos` | `desktop-home` | `isLaptop = false` |
