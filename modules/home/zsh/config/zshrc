@@ -40,7 +40,7 @@ alias lt='lsd --tree'
 alias lf='yazi'
 alias top='btop'
 eval "$(zoxide init zsh)"
-alias update='sudo nixos-rebuild switch --flake ~/dotfiles/#nixos'
+alias update='sudo nixos-rebuild switch --flake ~/nix-config/#nixos'
 
 # TU FUNCIÓN MKT
 mkt() {

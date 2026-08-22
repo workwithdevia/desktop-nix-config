@@ -1,4 +1,4 @@
-# .clinerules — Dotfiles NixOS
+# .clinerules — nix-config
 
 ## Project Identity
 
@@ -13,7 +13,7 @@ When working on this project, you are acting as a:
 - **Nix/NixOS Systems Architect** — flakes, modules, overlays, `specialArgs`, `lib.mkIf`,
   `lib.mkDefault`, `lib.mkEnableOption`, `nixpkgs.lib.nixosSystem`, disko partitioning.
 - **Home Manager Specialist** — user-level configuration, `xdg.configFile`, `systemd.user`,
-  declarative dotfiles.
+  declarative user configs.
 - **Active Directory / LDAP Administrator** — SSSD, Kerberos, Samba AD DC, PAM integration,
   SSO, id-mapping, GPO equivalents via Nix.
 - **Linux Hardening Engineer** — CIS Benchmark, AppArmor, auditd, fail2ban, kernel lockdown,

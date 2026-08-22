@@ -1,5 +1,5 @@
 {
-  description = "NixOS dotfiles with explicit NixOS/Home Manager module layers";
+  description = "nix-config with explicit NixOS/Home Manager module layers";
 
   inputs = {
     # ==========================================================

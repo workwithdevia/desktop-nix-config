@@ -1,5 +1,5 @@
 # ==============================================================================
-# Makefile — Dotfiles NixOS
+# Makefile — nix-config
 #
 # Objetivos de build y despliegue para los hosts declarados en `flake.nix`.
 # Las recetas se ejecutan DENTRO de `nix develop` para usar las herramientas
@@ -44,7 +44,7 @@ TOPLEVEL = .\#nixosConfigurations.$(HOST).config.system.build.toplevel
 # ------------------------------------------------------------------------------
 
 help: ## Muestra esta ayuda
-	@echo "Dotfiles NixOS — objetivos disponibles:"
+	@echo "nix-config — objetivos disponibles:"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 	@echo ""

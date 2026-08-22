@@ -10,7 +10,7 @@
     vimAlias = true;
   };
 
-  # 1. Inyección de Dotfiles
+  # 1. Inyección de configuración
   # Esto le dice a Nix que tome la carpeta 'config' que está junto a este archivo
   # y la enlace de forma segura en ~/.config/nvim/
   xdg.configFile."nvim" = {
