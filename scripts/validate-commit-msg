@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG="$(head -n 1 "$COMMIT_MSG_FILE")"
+
+REGEX='^(feat|fix|refactor|chore|docs|test|ci|build|perf)\([a-z0-9][a-z0-9._/-]*\): [^[:space:]].{0,98}$'
+
+if [[ "$COMMIT_MSG" =~ $REGEX ]] && [[ "$COMMIT_MSG" != *. ]]; then
+  echo "✓ Valid commit message"
+  exit 0
+fi
+
+echo
+echo "❌ Invalid commit message."
+echo
+echo "Expected:"
+echo "  type(scope): description"
+echo
+echo "Allowed types:"
+echo "  feat"
+echo "  fix"
+echo "  refactor"
+echo "  chore"
+echo "  docs"
+echo "  test"
+echo "  ci"
+echo "  build"
+echo "  perf"
+echo
+echo "Examples:"
+echo "  feat(nix): add niri configuration"
+echo "  fix(dms): correct launcher configuration"
+echo "  chore(flake): update inputs"
+echo "  ci(gitlab): add validation pipeline"
+echo
+
+exit 1

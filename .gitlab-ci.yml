@@ -1,0 +1,151 @@
+stages:
+  - validate
+  - build
+  - deploy
+
+variables:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
+  GIT_DEPTH: "0"
+
+# ============================================================
+# VALIDATION
+# ============================================================
+
+branch-name:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - ./scripts/ci/check-branch.sh
+
+
+commit-message:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - ./scripts/ci/check-commits.sh
+
+
+alejandra:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - nix develop .#default --command alejandra --check .
+
+
+statix:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - nix develop .#default --command statix check
+
+
+deadnix:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - nix develop .#default --command deadnix .
+
+
+flake-check:
+  stage: validate
+  tags:
+    - pc-wwd
+  script:
+    - nix flake check
+
+
+# ============================================================
+# BUILD
+# ============================================================
+
+build-pc-wwd:
+  stage: build
+  tags:
+    - pc-wwd
+  script:
+    - |
+      nix build \
+        .#nixosConfigurations.pc-wwd.config.system.build.toplevel \
+        --no-link
+
+
+build-pc-portatil:
+  stage: build
+  tags:
+    - pc-wwd
+  script:
+    - |
+      nix build \
+        .#nixosConfigurations.pc-portatil.config.system.build.toplevel \
+        --no-link
+
+
+# ============================================================
+# DEPLOY
+# ============================================================
+
+deploy-pc-wwd:
+  stage: deploy
+  tags:
+    - pc-wwd
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main"'
+      when: never
+
+    - changes:
+        - hosts/pc-wwd/**/*
+        - modules/**/*
+        - flake.nix
+        - flake.lock
+        - secrets/pc-wwd.yaml
+      when: on_success
+
+    - when: never
+
+  script:
+    - cd /etc/nixos
+    - git pull origin main
+    - |
+      systemd-run \
+        --unit=nixos-deploy-ci-$CI_JOB_ID \
+        --remain-after-exit \
+        --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
+        /run/current-system/sw/bin/nixos-rebuild switch \
+        --flake /etc/nixos#pc-wwd
+
+
+deploy-pc-portatil:
+  stage: deploy
+  tags:
+    - pc-portatil
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main"'
+      when: never
+
+    - changes:
+        - hosts/pc-portatil/**/*
+        - modules/**/*
+        - flake.nix
+        - flake.lock
+        - secrets/pc-portatil.yaml
+      when: manual
+
+    - when: never
+
+  script:
+    - cd /etc/nixos
+    - git pull origin main
+    - |
+      systemd-run \
+        --unit=nixos-deploy-ci-$CI_JOB_ID \
+        --remain-after-exit \
+        --setenv=PATH=/run/current-system/sw/bin:/run/wrappers/bin:/bin:/usr/bin \
+        /run/current-system/sw/bin/nixos-rebuild switch \
+        --flake /etc/nixos#pc-portatil

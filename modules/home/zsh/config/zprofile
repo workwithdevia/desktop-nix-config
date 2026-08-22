@@ -1,0 +1,4 @@
+# Iniciar Sway automáticamente si estamos en la TTY 1 y no hay entorno gráfico
+if [[ -z "$DISPLAY" && "$(tty)" == "/dev/tty1" ]]; then
+    #exec sway
+fi

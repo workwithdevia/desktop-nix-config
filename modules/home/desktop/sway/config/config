@@ -1,0 +1,34 @@
+############################
+# Input
+############################
+
+input type:keyboard {
+    xkb_layout es
+    xkb_numlock disabled
+}
+
+
+############################
+# Workspaces
+############################
+
+workspace 1
+
+
+############################
+# Startup
+############################
+
+# Terminal inicial
+exec wezterm
+
+# Bitwarden
+exec bitwarden
+
+
+############################
+# Configuración adicional
+############################
+
+include ~/.config/sway/config.d/*
+include /etc/sway/config.d/*

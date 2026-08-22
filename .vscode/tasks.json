@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Construir sistema (nom)",
+            "type": "shell",
+            "command": "nom build .#nixosConfigurations.pc-wwd.config.system.build.toplevel",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            }
+        },
+        {
+            "label": "Formatear todo (alejandra)",
+            "type": "shell",
+            "command": "alejandra .",
+            "problemMatcher": []
+        },
+        {
+            "label": "Analizar código (statix)",
+            "type": "shell",
+            "command": "statix check",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+# Archivos de compilación de Nix
+result
+result-*
+
+# Caché de direnv
+.direnv/
+
+# Archivos temporales del sistema
+.DS_Store
+*~
+*.swp

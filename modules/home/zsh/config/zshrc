@@ -1,0 +1,57 @@
+stty -ixon
+
+ZSH_THEME="robbyrussell"
+
+plugins=(
+    git
+    kubectl
+    fluxcd
+    ssh
+    kitty
+    postgres
+    aws
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# History settings
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_EXPIRE_DUPS_FIRST
+
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh-plugins/ohmyzsh/plugins/sudo/sudo.plugin.zsh
+source ~/.zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh-plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh-plugins/zsh-select/zsh-select.plugin.zsh
+source ~/.zsh-plugins/zsh-system-clipboard/zsh-system-clipboard.zsh
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# TUS ALIASES CUSTOM
+alias "cat=bat"
+alias "catp=batcat --style=plain"
+alias ls='lsd'
+alias ll='lsd -l'
+alias la='lsd -a'
+alias lt='lsd --tree'
+alias lf='yazi'
+alias top='btop'
+eval "$(zoxide init zsh)"
+alias update='sudo nixos-rebuild switch --flake ~/dotfiles/#nixos'
+
+# TU FUNCIÓN MKT
+mkt() {
+    mkdir -p nmap content scripts
+}
+
+# Saltar palabras con Ctrl + Flechas
+bindkey '^[[1;5C' forward-word       # Ctrl + Flecha Derecha4
+bindkey '^[[1;5D' backward-word      # Ctrl + Flecha Izquierda
+
+if [ -z "$ZELLIJ" ]; then
+  zellij
+fi
+

@@ -1,0 +1,167 @@
+# vi: ft=swayconfig
+
+#############################################
+# SwayFX + DankMaterialShell
+#############################################
+
+############################
+# Colores — One Dark
+############################
+
+set $background #282c34
+set $foreground #abb2bf
+
+set $black   #21252b
+set $red     #be5046
+set $green   #98c379
+set $yellow  #d19a66
+set $blue    #61afef
+set $magenta #c678dd
+set $cyan    #56b6c2
+set $white   #828997
+
+############################
+# Bordes / ventanas
+############################
+
+# Sin bordes tradicionales.
+# DMS / gaps hacen de separación visual.
+default_border pixel 0
+default_floating_border pixel 0
+
+# Bordes de SwayFX
+client.background $background
+
+client.focused \
+    $blue \
+    $blue \
+    $black \
+    $blue \
+    $blue
+
+client.focused_inactive \
+    $black \
+    $black \
+    $foreground \
+    $black \
+    $black
+
+client.unfocused \
+    $black \
+    $black \
+    $white \
+    $black \
+    $black
+
+client.urgent \
+    $red \
+    $red \
+    $black \
+    $red \
+    $red
+
+client.placeholder \
+    $background \
+    $background \
+    $foreground \
+    $background \
+    $background
+
+
+############################
+# SwayFX — Blur
+############################
+
+# Blur global.
+blur enable
+
+# Más pasadas = mejor calidad,
+# pero también más GPU.
+blur_passes 3
+blur_radius 8
+
+# Permite que las ventanas translúcidas
+# vean correctamente el contenido detrás.
+blur_xray disable
+
+
+############################
+# SwayFX — Shadows
+############################
+
+shadows enable
+
+shadow_blur_radius 20
+shadow_color #0000007F
+
+
+############################
+# SwayFX — Rounded corners
+############################
+
+corner_radius 10
+
+
+############################
+# SwayFX — Dim inactive
+############################
+
+# Las ventanas que no tienen foco
+# se oscurecen ligeramente.
+default_dim_inactive 0.15
+
+
+############################
+# SwayFX — Layer effects
+############################
+
+# DankMaterialShell / Waybar
+# recibe blur + sombra + esquinas.
+
+layer_effects "waybar" {
+    blur enable;
+    blur_xray enable;
+    shadows enable;
+    corner_radius 12;
+}
+
+
+############################
+# Layout
+############################
+
+gaps inner 10
+
+smart_gaps on
+smart_borders on
+
+focus_follows_mouse no
+
+
+############################
+# Floating
+############################
+
+# Ventanas flotantes mantienen
+# el mismo estilo visual.
+
+default_floating_border pixel 0
+
+
+############################
+# Idle
+############################
+
+# Evita que ciertas aplicaciones
+# interrumpan el comportamiento
+# de idle mientras están a pantalla completa.
+
+for_window [class=".*"] inhibit_idle fullscreen
+
+
+############################
+# Aplicaciones especiales
+############################
+
+# btop flotante
+for_window [app_id="btop-float"] fullscreen enable

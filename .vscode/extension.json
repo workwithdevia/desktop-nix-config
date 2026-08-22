@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "mkhl.direnv",
+    "arrterian.nix-env-selector",
+    "editorconfig.editorconfig",
+    "cab404.vscode-direnv",
+    "bbenoist.nix"
+  ]
+}
