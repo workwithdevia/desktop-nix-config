@@ -6,7 +6,6 @@
       "networkmanager"
       "wheel"
       "audio"
-      "realtime"
     ];
     shell = pkgs.zsh;
   };
