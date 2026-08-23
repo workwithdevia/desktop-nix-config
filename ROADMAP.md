@@ -24,7 +24,7 @@ Principales huecos detectados (se desarrollan abajo):
 |---|---|
 | Despliegue | `colmena` está en el devshell pero **no está integrado** en `outputs.nix`. Deploy en CI usa `systemd-run` + `nixos-rebuild` ad-hoc. |
 | Seguridad | Paquete inseguro permitido (`electron`), runner con `sudo NOPASSWD` + `wheel`, LUKS/TPM2 solo funcional a medias, sin Secure Boot. |
-| Secretos | Entradas muertas en `secrets/*.yaml` (`notion`, `dankcal`) ya sin consumidores; keys sin rotación. |
+| Secretos | Entradas muertas en `secrets/*.yaml`. |
 | Backups | Solo `rclone sync` unidireccional, sin restic, sin retención ni verificación de restauración. |
 | Observabilidad | No hay métricas (`node_exporter`, Grafana) pese a ser parte del stack declarado. |
 | Escritorio | `niri` existe como carpetas pero **no está importado**; sin audio (pipewire) explícito; sin drivers GPU declarados. |
@@ -36,17 +36,17 @@ Principales huecos detectados (se desarrollan abajo):
 Prioridad alta, esfuerzo bajo. Sin riesgo de romper el sistema.
 
 ### 1.1 Actualizar README 📚
+- [x] **2026-08-23 · workwithdevia** — Corregida la URL del remote (GitLab) en `README.md` y `scripts/install.sh`; actualizada la estructura del árbol; `niri` documentado como *no activo*.
 - **Qué:** corregir la URL de instalación (`install.sh` apunta a
   `github.com/work-with-devia/desktop-nix-config`, el remote real es
-  `gitlab.com/workwithdevia-group/desktop/nix-config`); actualizar la estructura
-  (ya no existe `modules/home/dcal.nix`); documentar `niri` como *no activo*.
+  `gitlab.com/workwithdevia-group/desktop/nix-config`); actualizar la estructura;
+  documentar `niri` como *no activo*.
 - **Archivos:** `README.md`, `scripts/install.sh`.
 - **Criterio de aceptación:** `README.md` describe fielmente el árbol actual;
   `bash <(curl instalación)` funciona desde el remote correcto.
 
 ### 1.2 Purgar secretos muertos de sops 🔒
-- **Qué:** eliminar `notion.api_key` y `dankcal.google_*` de `secrets/pc-wwd.yaml`
-  y `secrets/pc-portatil.yaml` (ya no tienen consumidores tras el refactor).
+- [ ] **Pendiente (bloqueado por claves AGE)** — Verificar la situación de las claves muertas con acceso a los AGE secrets (`notion`/`dankcal` ya no existen; revisar entradas vacías `wifi` en `pc-wwd.yaml` y `rclone` en `pc-portatil.yaml`).
 - **Cómo:** desde una máquina con las claves AGE:
   `sops secrets/pc-wwd.yaml` (editar y borrar las claves). No editar a mano:
   invalidaría el `mac`.
@@ -54,6 +54,7 @@ Prioridad alta, esfuerzo bajo. Sin riesgo de romper el sistema.
   existen las claves muertas.
 
 ### 1.3 Limpiar grupos del usuario en `user.nix` 🧹
+- [x] **2026-08-23 · workwithdevia** — Eliminados `docker` y `libvirtd` de `extraGroups`; se conservan `networkmanager`/`wheel` y se añaden `audio`/`realtime` (PipeWire).
 - **Qué:** `users.users.workwithdevia.extraGroups` incluye `docker` y `libvirtd`,
   pero `docker.nix` no está importado y `libvirt.nix` está comentado en
   `desktop-nixos.nix`. Deja solo `networkmanager` y `wheel`, o reactiva los
@@ -62,6 +63,7 @@ Prioridad alta, esfuerzo bajo. Sin riesgo de romper el sistema.
   un servicio inexistente, o `libvirtd` se activa conscientemente.
 
 ### 1.4 Resolver el módulo `niri` huérfano 🖥️
+- [x] **2026-08-23 · workwithdevia** — Documentado como reservado (inactivo) vía `README.md` en sendas carpetas; no se importa en ningún `default.nix`.
 - **Qué:** existen `modules/nixos/desktop/niri` y `modules/home/desktop/niri`
   que **no se importan** en ningún `default.nix`. Decidir: activarlo en un
   perfil o eliminarlo.
@@ -69,16 +71,19 @@ Prioridad alta, esfuerzo bajo. Sin riesgo de romper el sistema.
   justificación (`README` o comentario lo documentan).
 
 ### 1.5 Definir el stack de audio (pipewire) 🔊
+- [x] **2026-08-23 · workwithdevia** — Creado `modules/nixos/core/audio.nix` (PipeWire + ALSA; WirePlumber se activa solo) e importado en `core/default.nix` (aplica a ambos hosts).
 - **Qué:** el repo **no configura audio** explícitamente. Añadir módulo
   `modules/nixos/core/audio.nix` con PipeWire + WirePlumber en `common-nixos`.
 - **Criterio de aceptación:** `pactl info` reporta PipeWire en ambos hosts.
 
 ### 1.6 Limpiar ramas git 🌿
+- [x] **2026-08-23 · workwithdevia** — Borradas 12 ramas locales obsoletas (`chore/*`, `fix/*`, `feat/...`); queda solo `main`.
 - **Qué:** hay múltiples ramas `chore/*` y `fix/*` antiguas (`chore/hooks-hotfix-2`,
   etc.). Cerrarlas con MR/merge o borrarlas.
 - **Criterio de aceptación:** git branch local solo tiene `main` + ramas en curso.
 
 ### 1.7 Unificar networking del portátil 🌐
+- [x] **2026-08-23 · workwithdevia** — Unificado en `wpa_supplicant` declarativo: `wifi.nix` configura `networking.wireless` (secret sops `wifi/networks`); eliminada la activación de NetworkManager y el bloque redundante en `laptop-nixos.nix`.
 - **Qué:** `modules/nixos/core/wifi.nix` habilita `NetworkManager`, pero
   `laptop-nixos.nix` usa `networking.wireless` (wpa_supplicant) con el fichero
   de sops. Riesgo de conflicto de dos gestores. Unificar en uno solo (p. ej.

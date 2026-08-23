@@ -31,7 +31,6 @@ source ~/.zsh-plugins/zsh-system-clipboard/zsh-system-clipboard.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # TUS ALIASES CUSTOM
-alias "cat=bat"
 alias "catp=batcat --style=plain"
 alias ls='lsd'
 alias ll='lsd -l'

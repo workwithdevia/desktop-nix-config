@@ -12,7 +12,7 @@
 set -e
 
 # 1. Configuración de variables
-REPO_URL="https://github.com/work-with-devia/desktop-nix-config"
+REPO_URL="https://gitlab.com/workwithdevia-group/desktop/nix-config"
 REPO_BRANCH="${REPO_BRANCH:-main}"
 TARGET_DIR="/mnt/etc/nixos"
 
