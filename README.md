@@ -16,7 +16,8 @@
 ```
 nix-config/
 ├── flake.nix                           # Punto de entrada: inputs, mkHost, outputs
-├─  ├── outputs.nix                     # Factory de hosts (mkHost), specialArgs, Home Manager
+├── flake/
+│   ├── outputs.nix                     # Factory de hosts (mkHost), specialArgs, Home Manager
 │   ├── devshell.nix                    # Entorno de desarrollo (alejandra, statix, deadnix...)
 │   └── packages.nix                    # Paquetes personalizados del flake
 ├── Makefile                            # Build y deploy vía make (nix develop)
@@ -49,19 +50,20 @@ nix-config/
 │   │   └── laptop-home.nix             #   Extras Home portátil (display eDP-1)
 │   ├── nixos/                          # Módulos NixOS (system-level)
 │   │   ├── default.nix
-│   │   ├── core/                       #   locale, user, nix-settings, security, wifi, luks-tpm
+│   │   ├── core/                       #   locale, user, audio, nix-settings, security, wifi, luks-tpm
 │   │   │   ├── default.nix
 │   │   │   ├── locale.nix
+│   │   │   ├── audio.nix               #     PipeWire + WirePlumber
 │   │   │   ├── luks-tpm.nix            #     LUKS + TPM2 auto-unlock (portátiles)
 │   │   │   ├── nix-settings.nix
 │   │   │   ├── security-cis.nix        #     Hardening CIS Benchmark (5 flags)
 │   │   │   ├── security.nix
 │   │   │   ├── user.nix
 │   │   │   └── wifi.nix
-│   │   ├── desktop/                    #   Sway + Niri compositors
+│   │   ├── desktop/                    #   Sway compositor (+ niri, inactivo)
 │   │   │   ├── default.nix
 │   │   │   ├── dcal.nix
-│   │   │   ├── niri/
+│   │   │   ├── niri/                   #   inactivo (no importado)
 │   │   │   └── sway/
 │   │   ├── secrets/                    #   sops-nix (AGE encryption)
 │   │   ├── services/                   #   gitlab-runner
@@ -77,10 +79,10 @@ nix-config/
 │       ├── danksearch.nix / dcal.nix
 │       ├── fzf.nix / git.nix / session.nix
 │       ├── vscode.nix / zed.nix
-│       ├── desktop/                    #   Sway + DankMaterialShell + Niri + Winapps
+│       ├── desktop/                    #   Sway + DankMaterialShell + Winapps (niri inactivo)
 │       │   ├── default.nix
 │       │   ├── dank-material-shell/
-│       │   ├── niri/
+│       │   ├── niri/                   #   inactivo (no importado)
 │       │   ├── sway/
 │       │   └── winapps/
 │       ├── packages/                   #   cli, apps, dev, wayland, fonts
@@ -195,7 +197,7 @@ stages: [format-lint, check, build]
 2. Ejecuta el script de instalación:
 
 ```bash
-bash <(curl -sSL https://github.com/work-with-devia/desktop-nix-config/-/raw/main/install.sh)
+bash <(curl -sSL https://gitlab.com/workwithdevia-group/desktop/nix-config/-/raw/main/install.sh)
 ```
 
 3. Ingresa el nombre del host (`pc-wwd` o `pc-portatil`).
@@ -280,12 +282,12 @@ make develop           # Entra en nix develop
 |---|---|
 | **OS** | NixOS (unstable) |
 | **Gestor de configuración** | Home Manager |
-| **Compositor** | Sway (Wayland) + DankMaterialShell + Niri |
+| **Compositor** | Sway (Wayland) + DankMaterialShell (+ niri, inactivo) |
 | **Shell** | Zsh + Powerlevel10k + plugins |
 | **Terminal** | Wezterm + Zellij |
 | **Editor** | Neovim (lazy.nvim) + VS Code + Zed |
 | **Navegador** | Brave + Chrome + Firefox |
-| **Virtualización** | Podman, libvirt, Waydroid, Android, Docker |
+| **Virtualización** | Podman (libvirt, waydroid, android y docker pendientes de activación) |
 | **Secretos** | sops-nix (AGE encryption) |
 | **Backups** | rclone → Google Drive |
 | **CI/CD** | GitLab CI + GitLab Runner |

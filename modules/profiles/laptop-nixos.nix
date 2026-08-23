@@ -1,5 +1,5 @@
 # Perfil: laptop-nixos — NixOS extras para pc-portatil (wifi, tlp, bluetooth + GitLab Runner)
-{config, ...}: {
+{...}: {
   imports = [
     ../nixos/core/wifi.nix
     ../nixos/services/gitlab-runner.nix
@@ -18,12 +18,6 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = false;
-  };
-
-  # WiFi: las redes se cargan desde sops-nix secrets (wifi/networks)
-  networking.wireless = {
-    enable = true;
-    secretsFile = config.sops.secrets."wifi/networks".path;
   };
 
   # GitLab Runner para CI/CD local (tag: pc-portatil)

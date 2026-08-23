@@ -5,8 +5,8 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
-      "libvirtd"
+      "audio"
+      "realtime"
     ];
     shell = pkgs.zsh;
   };
