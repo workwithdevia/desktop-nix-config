@@ -14,13 +14,32 @@
     name: let
       dirCfg = cfg.directories.${name};
       args = lib.escapeShellArgs cfg.extraArgs;
+
+      # La condición se resuelve en tiempo de evaluación de Nix
+      rcloneAction =
+        if cfg.mode == "bisync"
+        then ''
+          if ! ${pkgs.rclone}/bin/rclone bisync \
+            ${lib.escapeShellArg dirCfg.localPath} \
+            ${lib.escapeShellArg (remoteTarget dirCfg)} \
+            ${args}; then
+            echo "bisync falló. Ejecutando --resync automático..."
+            ${pkgs.rclone}/bin/rclone bisync \
+              ${lib.escapeShellArg dirCfg.localPath} \
+              ${lib.escapeShellArg (remoteTarget dirCfg)} \
+              ${args} --resync
+          fi
+        ''
+        else ''
+          ${pkgs.rclone}/bin/rclone sync \
+            ${lib.escapeShellArg dirCfg.localPath} \
+            ${lib.escapeShellArg (remoteTarget dirCfg)} \
+            ${args}
+        '';
     in ''
       if [ -d ${lib.escapeShellArg dirCfg.localPath} ]; then
         echo "Syncing ${dirCfg.localPath} -> ${remoteTarget dirCfg}"
-        ${pkgs.rclone}/bin/rclone ${cfg.mode} \
-          ${lib.escapeShellArg dirCfg.localPath} \
-          ${lib.escapeShellArg (remoteTarget dirCfg)} \
-          ${args}
+        ${rcloneAction}
       else
         echo "Skipping missing directory: ${dirCfg.localPath}"
       fi
@@ -32,6 +51,7 @@
     runtimeInputs = [
       pkgs.coreutils
       pkgs.util-linux
+      pkgs.rclone
     ];
     text = ''
       set -euo pipefail
@@ -63,7 +83,7 @@ in {
       default = "sync";
       description = ''
         rclone operation mode. `sync` is one-way local -> Google Drive.
-        `bisync` is two-way and usually requires an initial manual `rclone bisync --resync`.
+        `bisync` is two-way.
       '';
     };
 
@@ -86,7 +106,6 @@ in {
       default = "${config.home.homeDirectory}/.config/rclone/rclone.conf";
       description = ''
         Path to the rclone config file containing the Google Drive OAuth token.
-        Keep this file outside the Nix store, or point it at a secret managed by sops-nix or agenix.
       '';
       example = "${config.home.homeDirectory}/.config/rclone/rclone.conf";
     };
@@ -154,6 +173,8 @@ in {
       Unit = {
         Description = "Synchronize selected folders with Google Drive via rclone";
         Documentation = ["man:rclone(1)"];
+        After = ["network-online.target"];
+        Wants = ["network-online.target"];
       };
 
       Service = {
@@ -172,7 +193,7 @@ in {
         Unit = "rclone-google-drive.service";
       };
 
-      Install.WantedBy = ["timers.target"];
+      Install.WantedBy = ["timers.target" "default.target"];
     };
   };
 }
