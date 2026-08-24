@@ -5,7 +5,7 @@
   services.rclone-google-drive = {
     enable = true;
     configFile = config.sops.secrets."rclone/config".path;
-    mode = "sync";
+    mode = "bisync";
     remoteName = "gdrive";
     remoteRoot = "Backups";
     interval = "15m";
