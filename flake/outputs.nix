@@ -98,6 +98,7 @@ inputs: let
               inputs.dms.homeModules.dank-material-shell
               inputs.dms-plugin-registry.homeModules.default
               inputs.danksearch.homeModules.dsearch
+              inputs.sops-nix.homeManagerModules.sops
             ];
 
             users.${username}.imports = [

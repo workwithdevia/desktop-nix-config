@@ -1,7 +1,10 @@
 # Perfil: desktop-home — Home Manager extras para pc-wwd (rclone, multi-monitor)
-{
+{config, ...}: {
+  sops.secrets."rclone/config" = {};
+
   services.rclone-google-drive = {
     enable = true;
+    configFile = config.sops.secrets."rclone/config".path;
     mode = "sync";
     remoteName = "gdrive";
     remoteRoot = "Backups";

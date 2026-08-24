@@ -1,14 +1,12 @@
 keys:
-  - &user-wwd age1xdg62xr8kc8aamyyahhdfvs09jja8cfghkgvlcz7txpgqjer8qmqzef7j7
   - &pc-wwd age1v3ryu5e0ylwu9qz05s0qwa49u55m7pv4xlmmtgjn092wf782vd7qkt6ynh
 
 creation_rules:
-  - path_regex: secrets/pc-wwd\.yaml$
+  - path_regex: hosts/pc-wwd/secrets\.yaml$
     key_groups:
       - age:
-          - *user-wwd
           - *pc-wwd
-  - path_regex: secrets/pc-portatil\.yaml$
+  - path_regex: hosts/pc-portatil/secrets\.yaml$
     key_groups:
       - age:
-          - *user-wwd
+          - *pc-wwd

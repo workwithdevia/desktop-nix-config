@@ -9,4 +9,6 @@
     homeDirectory = "/home/${username}";
     stateVersion = "26.11";
   };
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }
