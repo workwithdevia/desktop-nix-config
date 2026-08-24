@@ -1,7 +1,6 @@
-# Perfil: laptop-nixos — NixOS extras para pc-portatil (wifi, tlp, bluetooth + GitLab Runner)
+# Perfil: laptop-nixos — NixOS extras para pc-portatil (tlp, bluetooth + GitLab Runner)
 {...}: {
   imports = [
-    ../nixos/core/wifi.nix
     ../nixos/services/gitlab-runner.nix
   ];
 
