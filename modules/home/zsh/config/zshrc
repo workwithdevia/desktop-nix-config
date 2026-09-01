@@ -38,6 +38,7 @@ alias la='lsd -a'
 alias lt='lsd --tree'
 alias lf='yazi'
 alias top='btop'
+eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh)"
 alias update='sudo nixos-rebuild switch --flake ~/nix-config/#nixos'
 
