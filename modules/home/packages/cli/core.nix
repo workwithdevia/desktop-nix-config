@@ -15,6 +15,5 @@
     unrar
     p7zip
     lsof
-    direnv
   ];
 }
