@@ -12,5 +12,6 @@
     ./vscode.nix
     ./danksearch.nix
     ./dcal.nix
+    ./direnv.nix
   ];
 }
