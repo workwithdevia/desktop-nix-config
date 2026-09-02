@@ -58,7 +58,6 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    exec zsh
     echo ""
     echo "❄️  nix-config development environment"
     echo ""

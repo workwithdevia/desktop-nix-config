@@ -2,9 +2,9 @@
 {...}: {
   imports = [
     /*
-      ../nixos/virtualisation/libvirt.nix
-    ../nixos/virtualisation/android.nix
+    ../nixos/virtualisation/libvirt.nix
     */
+    ../nixos/virtualisation/android.nix
     ../nixos/virtualisation/waydroid
     ../nixos/services/gitlab-runner.nix
   ];

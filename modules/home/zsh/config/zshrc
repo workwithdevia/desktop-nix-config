@@ -51,7 +51,7 @@ mkt() {
 bindkey '^[[1;5C' forward-word       # Ctrl + Flecha Derecha4
 bindkey '^[[1;5D' backward-word      # Ctrl + Flecha Izquierda
 
-if [ -z "$ZELLIJ" ]; then
+if [[ -z "$ZELLIJ" && -z "$DIRENV_IN_ENVRC" ]]; then
   zellij
 fi
 
