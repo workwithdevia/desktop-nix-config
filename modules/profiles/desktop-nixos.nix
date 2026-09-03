@@ -11,5 +11,6 @@
 
   services.gitlab-runner-local = {
     enable = true;
+    tags = ["pc-wwd" "nixos" "x86_64-linux"];
   };
 }

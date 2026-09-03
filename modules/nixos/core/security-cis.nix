@@ -14,6 +14,7 @@ in {
     enableFail2ban = lib.mkEnableOption "fail2ban SSH protection";
     enableKernelHardening = lib.mkEnableOption "kernel hardening params";
     enableFirewallStrict = lib.mkEnableOption "strict firewall rules";
+    enableOpenSSH = lib.mkEnableOption "OpenSSH secure server";
   };
 
   config = {
