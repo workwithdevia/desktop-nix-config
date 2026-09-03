@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # Habilitar NetworkManager para la gestión de red (Wi-Fi y Ethernet)
   networking.networkmanager.enable = true;
 
