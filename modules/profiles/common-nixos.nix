@@ -7,6 +7,7 @@
     ../nixos/secrets
     ../nixos/core/security-cis.nix
     ../nixos/core/luks-tpm.nix
+    ../nixos/core/wifi.nix
   ];
 
   # Hardening base para todos los hosts
