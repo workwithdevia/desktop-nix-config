@@ -28,6 +28,14 @@ in {
       maxretry = 3;
     };
 
+    services.openssh = lib.mkIf cfg.enableOpenSSH {
+      enable = true;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = true; # Cambiar a false si solo usas llaves SSH
+      };
+    };
+
     boot.kernelParams = lib.mkIf cfg.enableKernelHardening (
       [
         "mitigations=auto"
