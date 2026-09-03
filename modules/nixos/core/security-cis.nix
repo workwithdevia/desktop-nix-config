@@ -32,7 +32,7 @@ in {
       enable = true;
       settings = {
         PermitRootLogin = "no";
-        PasswordAuthentication = true; # Cambiar a false si solo usas llaves SSH
+        PasswordAuthentication = false; # Cambiar a false si solo usas llaves SSH
       };
     };
 
