@@ -26,6 +26,7 @@ in {
       enable = true;
       bantime = "24h";
       maxretry = 3;
+      ignoreIP = ["192.168.1.0/24"];
     };
 
     services.openssh = lib.mkIf cfg.enableOpenSSH {
