@@ -28,7 +28,7 @@ keybinds clear-defaults=true {
         bind "Alt b" { TogglePaneFrames; SwitchToMode "Normal"; }      // Cmd B
         bind "Alt f" { ToggleFocusFullscreen; SwitchToMode "Normal"; } // Cmd F
         bind "Alt 0" { ToggleFloatingPanes; }                          // Cmd O
-        bind "Alt w" { CloseFocus; SwitchToMode "Normal"; }            // Cmd W
+        bind "Alt e" { CloseFocus; SwitchToMode "Normal"; }            // Cmd E
 
         bind "Alt Left" { MoveFocusOrTab "Left"; }  // Shift ←
         bind "Alt Right" { MoveFocusOrTab "Right"; } // Shift →
@@ -50,7 +50,7 @@ keybinds clear-defaults=true {
             SwitchToMode "Normal";
         }                                                      // Ctrl N
         bind "Ctrl r" { SwitchToMode "RenameTab"; TabNameInput 0; } // Ctrl R
-        bind "Ctrl w" { CloseTab; SwitchToMode "Normal"; }          // Ctrl W
+        bind "Ctrl e" { CloseTab; SwitchToMode "Normal"; }          // Ctrl E
         bind "Ctrl Shift Right" { GoToNextTab; }                              // Ctrl →
         bind "Ctrl Shift Left" { GoToPreviousTab; }                          // Ctrl ←
         bind "Ctrl Alt Shift Left" { MoveTab "Left"; }                           // Ctrl Cmd Shift ←
@@ -95,6 +95,7 @@ plugins {
     status-bar { path "status-bar"; }
     strider { path "strider"; }
     compact-bar { path "compact-bar"; }
+    zjstatus location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
 }
 
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
