@@ -1,0 +1,25 @@
+{
+  "title": "Google Chrome Keybinds",
+  "provider": "chrome",
+  "binds": {
+    "Tabs & Windows": [
+      { "key": "Ctrl + t", "desc": "Open new tab" },
+      { "key": "Ctrl + w", "desc": "Close current tab" },
+      { "key": "Ctrl + Shift + t", "desc": "Reopen closed tab" },
+      { "key": "Ctrl + Tab", "desc": "Next tab" },
+      { "key": "Ctrl + Shift + Tab", "desc": "Previous tab" },
+      { "key": "Ctrl + n", "desc": "New window" }
+    ],
+    "Navigation & Page": [
+      { "key": "Ctrl + r", "desc": "Reload page" },
+      { "key": "Ctrl + Shift + r", "desc": "Hard reload (clear cache)" },
+      { "key": "Ctrl + l", "desc": "Focus address bar" },
+      { "key": "Alt + Left/Right", "desc": "Back / Forward in history" }
+    ],
+    "Developer & Tools": [
+      { "key": "Ctrl + Shift + i", "desc": "Open Developer Tools" },
+      { "key": "Ctrl + Shift + c", "desc": "Inspect element" },
+      { "key": "Ctrl + f", "desc": "Search in page" }
+    ]
+  }
+}

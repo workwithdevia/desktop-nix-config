@@ -16,6 +16,7 @@ inputs: let
 
     overlays = [
       inputs.nur.overlays.default
+      inputs.nix-cachyos-kernel.overlays.pinned
     ];
 
     config.allowUnfree = true;
@@ -54,6 +55,7 @@ inputs: let
           nixpkgs = {
             overlays = [
               inputs.nur.overlays.default
+              inputs.nix-cachyos-kernel.overlays.pinned
             ];
 
             config.allowUnfree = true;

@@ -1,0 +1,80 @@
+{
+  "title": "Neovim Keybinds",
+  "provider": "nvim",
+  "binds": {
+    "Basic Movement & Editing": [
+      { "key": "w / b / e", "desc": "Next word / Back word / End of word" },
+      { "key": "0 / $", "desc": "Start of line / End of line" },
+      { "key": "gg / G", "desc": "Top of file / Bottom of file" },
+      { "key": "ciw / diw", "desc": "Change / Delete inside word" },
+      { "key": "u / Ctrl + r", "desc": "Undo / Redo" },
+      { "key": "y / p / P", "desc": "Yank (copy) / Paste after / Paste before" }
+    ],
+    "Visual & Block Mode": [
+      { "key": "v / V", "desc": "Character / Line visual mode" },
+      { "key": "Ctrl + v", "desc": "Visual block (column) mode" },
+      { "key": "> / <", "desc": "Shift indent right / left" }
+    ],
+    "Search & Replace": [
+      { "key": "/", "desc": "Search forward" },
+      { "key": "?", "desc": "Search backward" },
+      { "key": "n / N", "desc": "Next / Previous search result" },
+      { "key": ":%s/old/new/gc", "desc": "Find and replace globally with confirmation" },
+      { "key": "* / #", "desc": "Search word under cursor forward/backward" }
+    ],
+    "Telescope (Fuzzy Finder)": [
+      { "key": "<leader>ff", "desc": "Find files (Telescope)" },
+      { "key": "<leader>fg", "desc": "Live grep text (Telescope)" },
+      { "key": "<leader>fb", "desc": "Find open buffers (Telescope)" },
+      { "key": "<leader>fh", "desc": "Help tags (Telescope)" }
+    ],
+    "Macros & Advanced": [
+      { "key": "q[a-z]", "desc": "Record macro into register" },
+      { "key": "@[a-z]", "desc": "Execute macro from register" },
+      { "key": ".", "desc": "Repeat last editing command" }
+    ],
+    "AI & Copilot": [
+      { "key": "<Tab>", "desc": "Accept inline AI suggestion" },
+      { "key": "Alt + ] / [", "desc": "Next / Previous AI suggestion" }
+    ],
+    "LSP & Navigation": [
+      { "key": "gd", "desc": "Go to definition" },
+      { "key": "gD", "desc": "Go to declaration" },
+      { "key": "gr", "desc": "Go to references" },
+      { "key": "K", "desc": "Hover documentation" },
+      { "key": "<leader> + rn", "desc": "Rename symbol" },
+      { "key": "<leader> + ca", "desc": "Code actions" },
+      { "key": "[d / ]d", "desc": "Previous / Next diagnostic" }
+    ],
+    "Comments & Formatting": [
+      { "key": "gcc", "desc": "Toggle comment line" },
+      { "key": "gc + [motion]", "desc": "Comment block" },
+      { "key": "=", "desc": "Format/indent selected code" }
+    ],
+    "Folding": [
+      { "key": "za", "desc": "Toggle fold" },
+      { "key": "zc", "desc": "Close fold" },
+      { "key": "zo", "desc": "Open fold" },
+      { "key": "zM", "desc": "Close all folds" },
+      { "key": "zR", "desc": "Open all folds" }
+    ],
+    "Buffers": [
+      { "key": ":bn", "desc": "Next buffer" },
+      { "key": ":bp", "desc": "Previous buffer" },
+      { "key": ":bd", "desc": "Close buffer" },
+      { "key": ":ls", "desc": "List open buffers" }
+    ],
+    "Window Splits": [
+      { "key": "Ctrl + w, + / -", "desc": "Increase/Decrease height" },
+      { "key": "Ctrl + w, > / <", "desc": "Increase/Decrease width" },
+      { "key": "Ctrl + w, =", "desc": "Equalize split sizes" }
+    ],
+    "General & Explorer": [
+      { "key": "Ctrl + w + Arrows", "desc": "Jump between windows" },
+      { "key": "Space + e", "desc": "Toggle file explorer" },
+      { "key": "a", "desc": "Create file/folder (in explorer)" },
+      { "key": "Shift + h / l", "desc": "Move to left/right tab" },
+      { "key": "Ctrl + /", "desc": "Open terminal" }
+    ]
+  }
+}
