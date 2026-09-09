@@ -104,6 +104,7 @@ bindsym F11 exec dms ipc call mpris increment
 
 # Apps
 
+bindsym $mod+h exec dms ipc call keybinds toggle $(swaymsg -t get_tree | jq -r 'recurse(.nodes[], .floating_nodes[]) | select(.focused) | . as $win | ($win.app_id // $win.window_properties.class // "") as $id | ($win.name // "") as $name | if $id == "org.wezfurlong.wezterm" then if ($name | ascii_downcase | contains("nvim")) then "nvim" elif ($name | ascii_downcase | contains("lazygit")) then "lazygit" elif ($name | ascii_downcase | contains("zellij")) then "zellij" else "wezterm" end elif ($id | ascii_downcase | contains("chrome")) then "chrome" else $id end')
 bindsym $mod+d exec dms ipc call spotlight toggle
 bindsym $mod+v exec dms ipc call clipboard toggle
 bindsym $mod+p exec dms ipc call processlist focusOrToggle
