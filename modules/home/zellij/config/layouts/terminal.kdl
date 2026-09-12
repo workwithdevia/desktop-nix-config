@@ -18,17 +18,51 @@ layout {
                 mode_normal  "#[bg=blue] "
                 mode_tmux    "#[bg=#ffc387] "
 
-                tab_normal   "#[fg=#6C7086] {name} "
-                tab_active   "#[fg=#9399B2,bold,italic] {name} "
+                // formatting for inactive tabs
+                tab_normal              "#[fg=#6C7086] {index} :: {name} "
+                tab_normal_fullscreen   "#[fg=#6C7086] {index} :: {name} [] "
+                tab_normal_sync         "#[fg=#6C7086] {index} :: {name} <> "
+
+                // formatting for the current active tab
+                tab_active              "#[fg=#9399B2,bold,italic] {name} {floating_indicator}"
+                tab_active_fullscreen   "#[fg=#9399B2,bold,italic] {name} {fullscreen_indicator}"
+                tab_active_sync         "#[fg=#9399B2,bold,italic] {name} {sync_indicator}"
+
+                // separator between the tabs
+                tab_separator           "#[fg=#6C7086,bg=#181825] | "
+
+                // format when renaming a tab
+                tab_rename              "#[fg=#eba0ac,bg=#181825] {index} {name} {floating_indicator} "
+
+                // indicators
+                tab_sync_indicator       "<> "
+                tab_fullscreen_indicator "[] "
+                tab_floating_indicator   "⬚ "
+
+                // limit tab display count
+                tab_display_count         "3"  // limit to showing 3 tabs
+                tab_truncate_start_format "#[fg=red,bg=#181825] < +{count} ..."
+                tab_truncate_end_format   "#[fg=red,bg=#181825] ... +{count} >"
+
+                // index configuration
+                tab_zero_based_index      "false" // start with 0 instead of 1 for the index
+
+                command_NAME_command  "bash -c \"pwd | base64\""
+
 
                 command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
                 command_git_branch_format      "#[fg=blue] {stdout} "
                 command_git_branch_interval    "10"
                 command_git_branch_rendermode  "static"
 
-                datetime        "#[fg=#6C7086,bold] {format} "
-                datetime_format "%A, %d %b %Y %H:%M"
-                datetime_timezone "Europe/Berlin"
+
+                swap_layout_format          "#[fg=#6C7086] {name} "
+                swap_layout_hide_if_empty   "true"
+
+                notification_format_unread           "#[fg=#89B4FA,bg=#181825,blink]  #[fg=#89B4FA,bg=#181825] {message} "
+                notification_format_no_notifications "#[fg=#89B4FA,bg=#181825,dim]   "
+                notification_show_interval           "10"
+
             }
         }
     }
