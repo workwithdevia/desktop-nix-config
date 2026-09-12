@@ -1,0 +1,26 @@
+{
+  "title": "Lazygit Keybinds",
+  "provider": "lazygit",
+  "binds": {
+    "Files & Staging": [
+      { "key": "Space", "desc": "Toggle stage file/line" },
+      { "key": "a", "desc": "Stage all files" },
+      { "key": "c", "desc": "Commit changes" },
+      { "key": "C (Shift + c)", "desc": "Commit using external editor" }
+    ],
+    "Branches & Merging": [
+      { "key": "n", "desc": "New branch" },
+      { "key": "Space", "desc": "Checkout branch (in Branches panel)" },
+      { "key": "M", "desc": "Merge into current branch" }
+    ],
+    "Push/Pull & Remote": [
+      { "key": "p", "desc": "Pull from remote" },
+      { "key": "P (Shift + p)", "desc": "Push to remote" },
+      { "key": "f", "desc": "Fetch" }
+    ],
+    "Navigation": [
+      { "key": "1-5", "desc": "Jump between panels" },
+      { "key": "x", "desc": "Open context menu for selected item" }
+    ]
+  }
+}

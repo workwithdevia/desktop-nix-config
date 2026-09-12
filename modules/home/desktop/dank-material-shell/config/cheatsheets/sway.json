@@ -1,0 +1,22 @@
+{
+  "title": "Sway Keybinds",
+  "provider": "sway",
+  "binds": {
+    "Window Management": [
+      { "key": "Super + Enter", "desc": "Open terminal" },
+      { "key": "Super + d", "desc": "Open app launcher" },
+      { "key": "Super + Shift + q", "desc": "Kill focused window" },
+      { "key": "Super + Arrows", "desc": "Move focus" },
+      { "key": "Super + Shift + Arrows", "desc": "Move window position" },
+      { "key": "Super + v / h", "desc": "Split vertical / horizontal" },
+      { "key": "Super + s / w / e", "desc": "Layout stacking/tabbed/tiling" },
+      { "key": "Super + f", "desc": "Toggle fullscreen" },
+      { "key": "Super + Shift + Space", "desc": "Toggle tiling/floating" }
+    ],
+    "Workspaces & System": [
+      { "key": "Super + 1-9", "desc": "Switch to workspace 1-9" },
+      { "key": "Super + Shift + 1-9", "desc": "Move window to workspace" },
+      { "key": "Super + Shift + c", "desc": "Reload Sway config" }
+    ]
+  }
+}

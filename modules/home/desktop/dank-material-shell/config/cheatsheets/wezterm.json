@@ -1,0 +1,43 @@
+{
+  "title": "WezTerm Keybinds",
+  "provider": "wezterm",
+  "binds": {
+    "Tabs & Windows": [
+      { "key": "Ctrl + Shift + N", "desc": "New window" },
+      { "key": "Ctrl + Shift + T", "desc": "New tab" },
+      { "key": "Ctrl + Shift + W", "desc": "Close active tab" },
+      { "key": "Ctrl + Shift + [ / ]", "desc": "Previous / Next tab" },
+      { "key": "Alt + 1-9", "desc": "Switch to tab 1-9" }
+    ],
+    "Modes & Productivity": [
+      { "key": "Ctrl + Shift + X", "desc": "Activate Copy Mode" },
+      { "key": "Ctrl + Shift + F", "desc": "Search Mode" },
+      { "key": "Ctrl + Shift + P", "desc": "Command Palette" },
+      { "key": "Ctrl + Shift + L", "desc": "Launcher menu" },
+      { "key": "Ctrl + Shift + Space", "desc": "QuickSelect mode" }
+    ],
+    "Display & Clipboard": [
+      { "key": "Ctrl + Shift + C / V", "desc": "Copy / Paste clipboard" },
+      { "key": "Shift + PgUp / PgDn", "desc": "Scroll page up/down" },
+      { "key": "Ctrl + Shift + K / J", "desc": "Scroll line up/down" },
+      { "key": "Ctrl + + / -", "desc": "Increase/Decrease font size" },
+      { "key": "Ctrl + 0", "desc": "Reset font size" }
+    ],
+    "Panes": [
+      { "key": "Ctrl + p, n", "desc": "New pane" },
+      { "key": "Ctrl + p, x", "desc": "Close pane" },
+      { "key": "Ctrl + p, f", "desc": "Toggle fullscreen pane" },
+      { "key": "Alt + Arrows", "desc": "Move focus between panes" }
+    ],
+    "Tabs": [
+      { "key": "Ctrl + t, n", "desc": "New tab" },
+      { "key": "Ctrl + t, x", "desc": "Close tab" },
+      { "key": "Ctrl + t, r", "desc": "Rename tab" }
+    ],
+    "Session & Modes": [
+      { "key": "Ctrl + o", "desc": "Session manager / Detach" },
+      { "key": "Ctrl + s", "desc": "Scroll / Search mode" },
+      { "key": "Ctrl + g", "desc": "Lock interface" }
+    ]
+  }
+}

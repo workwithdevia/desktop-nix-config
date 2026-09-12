@@ -29,7 +29,8 @@ in {
     "iptable_mangle"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages;
+  #boot.kernelPackages = pkgs.linuxPackages;
+  boot.kernelParams = ["psi=1"];
 
   # ============================================================
   # Network

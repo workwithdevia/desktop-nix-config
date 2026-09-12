@@ -18,7 +18,6 @@
     # Solo auditd en escritorios (menos overhead de batería en laptop)
     enableAuditd = !isLaptop;
     enableOpenSSH = true;
-    # Solo fail2ban en laptops (expuestas a redes públicas)
-    enableFail2ban = isLaptop;
+    enableFail2ban = true;
   };
 }

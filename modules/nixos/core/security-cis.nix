@@ -26,13 +26,14 @@ in {
       enable = true;
       bantime = "24h";
       maxretry = 3;
+      ignoreIP = ["192.168.1.0/24"];
     };
 
     services.openssh = lib.mkIf cfg.enableOpenSSH {
       enable = true;
       settings = {
         PermitRootLogin = "no";
-        PasswordAuthentication = true; # Cambiar a false si solo usas llaves SSH
+        PasswordAuthentication = false; # Cambiar a false si solo usas llaves SSH
       };
     };
 

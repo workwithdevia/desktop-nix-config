@@ -5,7 +5,7 @@
       src = builtins.fetchTarball {
         url = "https://code.visualstudio.com/sha/download?build=insider&os=linux-x64";
         # Colocamos un placeholder temporal para que Nix falle y nos dé el hash correcto en consola
-        sha256 = "0b2v97dip1z4lv2blrpqnfs2daxybpn7shng6kwa3m56h94kvmh9";
+        sha256 = "0lcx0bh0r4lsll47b45qd69871lrcwg43s903p6gddcdi9k48lav";
       };
       version = "latest";
 
