@@ -1,14 +1,5 @@
 layout {
-    tab name="terminal" focus=true {
-        pane focus=true
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
-    tab name="app" {
+    tab name="nvim" {
         pane split_direction="vertical" {
             pane name="web/rescript" command="zsh" start_suspended=true {
                 args "-c" "cli rescript watch"

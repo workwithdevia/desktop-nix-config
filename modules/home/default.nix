@@ -9,7 +9,6 @@
     ./git.nix
     ./fzf.nix
     ./chrome.nix
-    ./vscode.nix
     ./danksearch.nix
     ./dcal.nix
     ./direnv.nix
