@@ -4,5 +4,6 @@
     ./apps
     ./wayland
     ./fonts.nix
+    ./dev/containers.nix
   ];
 }

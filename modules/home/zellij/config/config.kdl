@@ -22,39 +22,42 @@ keybinds clear-defaults=true {
     }
 
     shared_except "locked" "search" {
-        bind "Alt n" { NewPane "Right"; }                              // Cmd N
-        bind "Alt Shift n" { NewPane "Down"; }                               // Cmd Shift N
+        bind "Alt n" { NewPane "Right"; }                             // Cmd N
+        bind "Alt Shift n" { NewPane "Down"; }                        // Cmd Shift N
         bind "Alt r" { SwitchToMode "RenamePane"; PaneNameInput 0; }   // Cmd R
         bind "Alt b" { TogglePaneFrames; SwitchToMode "Normal"; }      // Cmd B
         bind "Alt f" { ToggleFocusFullscreen; SwitchToMode "Normal"; } // Cmd F
-        bind "Alt 0" { ToggleFloatingPanes; }                          // Cmd O
+        bind "Alt 0" { ToggleFloatingPanes; }                         // Cmd O
         bind "Alt e" { CloseFocus; SwitchToMode "Normal"; }            // Cmd E
 
-        bind "Alt Left" { MoveFocusOrTab "Left"; }  // Shift ←
-        bind "Alt Right" { MoveFocusOrTab "Right"; } // Shift →
-        bind "Alt Up" { MoveFocus "Up"; }         // Shift ↑
-        bind "Alt Down" { MoveFocus "Down"; }       // Shift ↓
+        // Navegación de paneles con Alt + h, j, k, l (En lugar de flechas)
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt j" { MoveFocus "Down"; }
 
-        bind "Super Shift Left" { MovePane "Left"; }  // Opt Shift ←
-        bind "Super Shift Right" { MovePane "Right"; } // Opt Shift →
-        bind "Super Shift Up" { MovePane "Up"; }    // Opt Shift ↑
-        bind "Super Shift Down" { MovePane "Down"; }  // Opt Shift ↓
+        // Mover paneles con Super Shift + h, j, k, l
+        bind "Super Shift h" { MovePane "Left"; }
+        bind "Super Shift l" { MovePane "Right"; }
+        bind "Super Shift k" { MovePane "Up"; }
+        bind "Super Shift j" { MovePane "Down"; }
 
-        bind "Ctrl Alt Left" { Resize "Left"; }  // Cmd Ctrl ←
-        bind "Ctrl Alt Right" { Resize "Right"; } // Cmd Ctrl →
-        bind "Ctrl Alt Up" { Resize "Up"; }    // Cmd Ctrl ↑
-        bind "Ctrl Alt Down" { Resize "Down"; }  // Cmd Ctrl ↓
+        // Redimensionar con Ctrl Alt + h, j, k, l
+        bind "Ctrl Alt h" { Resize "Left"; }
+        bind "Ctrl Alt l" { Resize "Right"; }
+        bind "Ctrl Alt k" { Resize "Up"; }
+        bind "Ctrl Alt j" { Resize "Down"; }
 
         bind "Ctrl n" {
             NewTab { layout "terminal"; }
             SwitchToMode "Normal";
-        }                                                      // Ctrl N
+        }                                                             // Ctrl N
         bind "Ctrl r" { SwitchToMode "RenameTab"; TabNameInput 0; } // Ctrl R
         bind "Ctrl e" { CloseTab; SwitchToMode "Normal"; }          // Ctrl E
-        bind "Ctrl Shift Right" { GoToNextTab; }                              // Ctrl →
-        bind "Ctrl Shift Left" { GoToPreviousTab; }                          // Ctrl ←
-        bind "Ctrl Alt Shift Left" { MoveTab "Left"; }                           // Ctrl Cmd Shift ←
-        bind "Ctrl Alt Shift Right" { MoveTab "Right"; }                          // Ctrl Cmd Shift →
+        bind "Ctrl Shift Right" { GoToNextTab; }                                  // Ctrl →
+        bind "Ctrl Shift Left" { GoToPreviousTab; }                               // Ctrl ←
+        bind "Ctrl Alt Shift Left" { MoveTab "Left"; }                            // Ctrl Cmd Shift ←
+        bind "Ctrl Alt Shift Right" { MoveTab "Right"; }                           // Ctrl Cmd Shift →
     }
 
     shared_except "locked" {

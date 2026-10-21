@@ -6,6 +6,7 @@
     ./wezterm
     ./zellij
     ./nvim
+    ./vscode.nix
     ./git.nix
     ./fzf.nix
     ./chrome.nix

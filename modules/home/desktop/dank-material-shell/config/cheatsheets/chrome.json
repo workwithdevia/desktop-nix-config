@@ -1,25 +1,68 @@
 {
-  "title": "Google Chrome Keybinds",
-  "provider": "chrome",
+  "title": "Vimium Keybinds",
+  "provider": "vimium",
   "binds": {
     "Tabs & Windows": [
-      { "key": "Ctrl + t", "desc": "Open new tab" },
-      { "key": "Ctrl + w", "desc": "Close current tab" },
-      { "key": "Ctrl + Shift + t", "desc": "Reopen closed tab" },
-      { "key": "Ctrl + Tab", "desc": "Next tab" },
-      { "key": "Ctrl + Shift + Tab", "desc": "Previous tab" },
-      { "key": "Ctrl + n", "desc": "New window" }
+      {
+        "key": "t",
+        "desc": "Open new tab"
+      },
+      {
+        "key": "x",
+        "desc": "Close current tab"
+      },
+      {
+        "key": "X",
+        "desc": "Reopen closed tab"
+      },
+      {
+        "key": "K / gt",
+        "desc": "Next tab"
+      },
+      {
+        "key": "J / gT",
+        "desc": "Previous tab"
+      },
+      {
+        "key": "W",
+        "desc": "Move current tab to new window"
+      }
     ],
     "Navigation & Page": [
-      { "key": "Ctrl + r", "desc": "Reload page" },
-      { "key": "Ctrl + Shift + r", "desc": "Hard reload (clear cache)" },
-      { "key": "Ctrl + l", "desc": "Focus address bar" },
-      { "key": "Alt + Left/Right", "desc": "Back / Forward in history" }
+      {
+        "key": "r",
+        "desc": "Reload page"
+      },
+      {
+        "key": "R",
+        "desc": "Hard reload page"
+      },
+      {
+        "key": "ge",
+        "desc": "Edit current URL"
+      },
+      {
+        "key": "H / L",
+        "desc": "Back / Forward in history"
+      }
     ],
-    "Developer & Tools": [
-      { "key": "Ctrl + Shift + i", "desc": "Open Developer Tools" },
-      { "key": "Ctrl + Shift + c", "desc": "Inspect element" },
-      { "key": "Ctrl + f", "desc": "Search in page" }
+    "Hints & Search": [
+      {
+        "key": "f",
+        "desc": "Open link in current tab"
+      },
+      {
+        "key": "F",
+        "desc": "Open link in new tab"
+      },
+      {
+        "key": "o",
+        "desc": "Open URL, bookmark, or history search"
+      },
+      {
+        "key": "/",
+        "desc": "Search in page"
+      }
     ]
   }
 }
