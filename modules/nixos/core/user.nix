@@ -6,6 +6,10 @@
       "networkmanager"
       "wheel"
       "audio"
+      "dialout"
+      "uucp"
+      "video"
+      "render"
     ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
@@ -19,5 +23,7 @@
   environment.systemPackages = with pkgs; [
     git
     neovim
+    devenv
+    uv
   ];
 }

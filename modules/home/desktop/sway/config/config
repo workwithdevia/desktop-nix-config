@@ -5,6 +5,7 @@
 input type:keyboard {
     xkb_layout es
     xkb_numlock disabled
+    #xkb_options "lv3:ralt_switch"
 }
 
 
@@ -19,12 +20,7 @@ workspace 1
 # Startup
 ############################
 
-# Terminal inicial
-exec wezterm
-
-# Bitwarden
-exec bitwarden
-
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 ############################
 # Configuración adicional

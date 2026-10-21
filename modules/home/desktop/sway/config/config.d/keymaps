@@ -1,26 +1,29 @@
 # vi: ft=swayconfig
 
-set $mod Mod4
+set $mod Control
 set $term wezterm
 
 # Basic
 
 floating_modifier $mod
 
-bindsym $mod+Shift+h splith
-bindsym $mod+Shift+v splitv
+# Navegación estilo Vim (h, j, k, l) en lugar de flechas
+bindsym $mod+left focus left
+bindsym $mod+down focus down
+bindsym $mod+up focus up
+bindsym $mod+right focus right
 
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# Mover contenedores con Shift + Vim keys
+bindsym $mod+Shift+h mark swap, focus left, swap container with mark swap, focus left
+bindsym $mod+Shift+j mark swap, focus down, swap container with mark swap, focus down
+bindsym $mod+Shift+k mark swap, focus up, swap container with mark swap, focus up
+bindsym $mod+Shift+l mark swap, focus right, swap container with mark swap, focus right
 
-bindsym $mod+Shift+Left mark swap, focus left, swap container with mark swap, focus left
-bindsym $mod+Shift+Down mark swap, focus down, swap container with mark swap, focus down
-bindsym $mod+Shift+Up mark swap, focus up, swap container with mark swap, focus up
-bindsym $mod+Shift+Right mark swap, focus right, swap container with mark swap, focus right
+# Nuevas teclas para dividir pantallas (liberando h/v)
+bindsym Mod5+b layout toggle split
+bindsym Mod5+s focus parent, layout toggle split
 
-bindsym $mod+Shift+q kill
+bindsym Mod5+q kill
 
 # Workspace
 
@@ -62,14 +65,13 @@ bindsym $mod+e exec pkill wl-mirror;
 bindsym $mod+Shift+f floating toggle, resize set 400 225, move position 1500 800
 bindsym $mod+f fullscreen toggle
 
-# Modes
-
+# Modes - Resize con h, j, k, l
 bindsym $mod+r mode resize
 mode "resize" {
-    bindsym Left resize shrink width 10 px
-    bindsym Up resize shrink height 10 px
-    bindsym Down resize grow height 10 px
-    bindsym Right resize grow width 10 px
+    bindsym h resize shrink width 10 px
+    bindsym j resize grow height 10 px
+    bindsym k resize shrink height 10 px
+    bindsym l resize grow width 10 px
 
     bindsym Escape mode default
 }
@@ -93,7 +95,7 @@ bindsym $mod+shift+a exec ~/.config/sway/scripts/audio.sh
 bindsym $mod+shift+d exec sh -c '~/.config/sway/scripts/toogle-services.sh docker'
 bindsym $mod+shift+p exec sh -c '~/.config/sway/scripts/toogle-services.sh podman'
 bindsym $mod+shift+w exec sh -c '~/.config/sway/scripts/toogle-services.sh waydroid'
-bindsym $mod+shift+l exec sh -c '~/.config/sway/scripts/toogle-services.sh libvirt'
+bindsym $mod+shift+i exec sh -c '~/.config/sway/scripts/toogle-services.sh libvirt'
 
 bindsym F7 exec dms ipc call mpris pause
 bindsym F8 exec dms ipc call mpris next
@@ -102,18 +104,18 @@ bindsym F10 exec dms ipc call mpris decrement
 bindsym F11 exec dms ipc call mpris increment
 
 
-# Apps
+# Apps (Movimos el toggle de keybinds de $mod+h a $mod+g para liberar h)
 
-bindsym $mod+h exec dms ipc call keybinds toggle $(swaymsg -t get_tree | jq -r 'recurse(.nodes[], .floating_nodes[]) | select(.focused) | . as $win | ($win.app_id // $win.window_properties.class // "") as $id | ($win.name // "") as $name | if $id == "org.wezfurlong.wezterm" then if ($name | ascii_downcase | contains("nvim")) then "nvim" elif ($name | ascii_downcase | contains("lazygit")) then "lazygit" elif ($name | ascii_downcase | contains("zellij")) then "zellij" else "wezterm" end elif ($id | ascii_downcase | contains("chrome")) then "chrome" else $id end')
+bindsym $mod+g exec dms ipc call keybinds toggle $(~/.config/sway/scripts/get_app.sh)
 bindsym $mod+d exec dms ipc call spotlight toggle
-bindsym $mod+v exec dms ipc call clipboard toggle
-bindsym $mod+p exec dms ipc call processlist focusOrToggle
-bindsym $mod+s exec dms ipc call settings focusOrToggle
-bindsym $mod+k exec dms ipc call keybinds openWithPath sway ~/.config/sway/config.d/keymaps
+bindsym Mod5+v exec dms ipc call clipboard toggle
+bindsym Mod5+p exec dms ipc call processlist focusOrToggle
+bindsym Mod5+h exec dms ipc call settings focusOrToggle
+bindsym Mod5+w exec dms ipc call keybinds openWithPath sway ~/.config/sway/config.d/keymaps
 bindsym $mod+Return exec $term
 
 # Control
 
-bindsym $mod+ctrl+r reload
-bindsym $mod+ctrl+e exec dms ipc call powermenu open
-bindsym $mod+l exec dms ipc call lock lock
+bindsym $mod+Mod5+r reload
+bindsym Mod5+Shift+q exec dms ipc call powermenu open
+bindsym Mod5+Escape exec dms ipc call lock lock

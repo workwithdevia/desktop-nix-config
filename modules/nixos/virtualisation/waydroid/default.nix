@@ -22,15 +22,25 @@ in {
   # Kernel
   # ============================================================
 
-  boot.kernelModules = [
-    "ip_tables"
-    "iptable_filter"
-    "iptable_nat"
-    "iptable_mangle"
-  ];
+  boot = {
+    kernelModules = [
+      "ip_tables"
+      "iptable_filter"
+      "iptable_nat"
+      "iptable_mangle"
+      "v4l2loopback"
+    ];
 
-  #boot.kernelPackages = pkgs.linuxPackages;
-  boot.kernelParams = ["psi=1"];
+    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
+
+    # exclusive_caps=1 es OBLIGATORIO para que Google Meet/Chrome detecte la cámara
+    extraModprobeConfig = ''
+      options v4l2loopback exclusive_caps=1 card_label="DroidCam"
+    '';
+
+    #boot.kernelPackages = pkgs.linuxPackages;
+    kernelParams = ["psi=1"];
+  };
 
   # ============================================================
   # Network

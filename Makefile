@@ -34,7 +34,7 @@ NIX := nix --extra-experimental-features "nix-command flakes"
 DEV := nix develop -c
 
 # Build con salida de `nix build` (se muestra el log plano, sin TUI de nom)
-BUILD := $(DEV) nix build --no-link
+BUILD := $(DEV) nix build --no-link -L
 
 # Ruta del toplevel de un host en el flake (el `\#` evita que make lo trate como comentario)
 TOPLEVEL = .\#nixosConfigurations.$(HOST).config.system.build.toplevel
