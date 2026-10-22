@@ -10,6 +10,11 @@
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    calepin = {
+      url = "github:vincentarelbundock/calepin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-ld = {
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
