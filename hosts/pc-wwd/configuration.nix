@@ -2,6 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/profiles/common-nixos.nix
+    ../../modules/profiles/work-modes.nix
     ../../modules/profiles/desktop-nixos.nix
   ];
 

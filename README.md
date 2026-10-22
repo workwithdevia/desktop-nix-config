@@ -31,12 +31,12 @@ nix-config/
 ├── prek.toml                           # Configuración de prek (git hooks)
 ├── hosts/                              # Configuraciones específicas por máquina
 │   ├── pc-wwd/
-│   │   ├── configuration.nix           #   Imports: common-nixos + desktop-nixos
+│   │   ├── configuration.nix           #   Imports: common-nixos + work-modes + desktop-nixos
 │   │   ├── home.nix                    #   Imports: common-home + desktop-home
 │   │   ├── disk.nix                    #   Particionado (disko)
 │   │   └── hardware-configuration.nix  #   Auto-generado, no editar manualmente
 │   └── pc-portatil/
-│       ├── configuration.nix           #   Imports: common-nixos + laptop-nixos
+│       ├── configuration.nix           #   Imports: common-nixos + work-modes + laptop-nixos
 │       ├── home.nix                    #   Imports: common-home + laptop-home
 │       ├── disk.nix
 │       └── hardware-configuration.nix
@@ -47,7 +47,8 @@ nix-config/
 │   │   ├── desktop-nixos.nix           #   Extras NixOS escritorio (GitLab Runner)
 │   │   ├── desktop-home.nix            #   Extras Home escritorio (rclone, multi-monitor)
 │   │   ├── laptop-nixos.nix            #   Extras NixOS portátil (wifi, tlp, bluetooth)
-│   │   └── laptop-home.nix             #   Extras Home portátil (display eDP-1)
+│   │   ├── laptop-home.nix             #   Extras Home portátil (display eDP-1)
+│   │   └── work-modes.nix              #   Specialisations de arranque Development y Design
 │   ├── nixos/                          # Módulos NixOS (system-level)
 │   │   ├── default.nix
 │   │   ├── core/                       #   locale, user, audio, nix-settings, security, wifi, luks-tpm
@@ -67,30 +68,31 @@ nix-config/
 │   │   │   └── sway/
 │   │   ├── secrets/                    #   sops-nix (AGE encryption)
 │   │   ├── services/                   #   gitlab-runner
-│   │   └── virtualisation/             #   podman, libvirt, waydroid, android, docker
-│   │       ├── android.nix
-│   │       ├── docker.nix
-│   │       ├── libvirt.nix
-│   │       ├── podman.nix
-│   │       └── waydroid.nix
+│   │   └── virtualisation/             #   podman activo; otros runtimes reservados/inactivos
+│   │       ├── android.nix             #   inactivo
+│   │       ├── docker.nix              #   inactivo
+│   │       ├── libvirt.nix              #   inactivo
+│   │       ├── podman.nix              #   activo en Common
+│   │       └── waydroid/               #   inactivo
 │   └── home/                           # Módulos Home Manager (user-level)
 │       ├── default.nix
-│       ├── brave.nix / chrome.nix / firefox.nix
+│       ├── brave.nix (inactivo) / chrome.nix / firefox.nix (inactivo)
 │       ├── danksearch.nix / dcal.nix
 │       ├── fzf.nix / git.nix / session.nix
-│       ├── vscode.nix / zed.nix
-│       ├── desktop/                    #   Sway + DankMaterialShell + Winapps (niri inactivo)
+│       ├── vscode.nix / zed.nix (inactivo)
+│       ├── desktop/                    #   Sway + DankMaterialShell (WinApps module inactive; niri inactive)
 │       │   ├── default.nix
 │       │   ├── dank-material-shell/
 │       │   ├── niri/                   #   inactivo (no importado)
 │       │   ├── sway/
 │       │   └── winapps/
-│       ├── packages/                   #   cli, apps, dev, wayland, fonts
+│       ├── packages/                   #   Baseline común y paquetes por modo
 │       │   ├── default.nix
 │       │   ├── fonts.nix
-│       │   ├── apps/                   #     develop, graphics, media, office, torrent
+│       │   ├── apps/                   #     media, office, torrent (Common)
 │       │   ├── cli/                    #     core, network
-│       │   ├── dev/                    #     compilers, containers, lsp
+│       │   ├── dev/                    #     compilers, lsp, apps (Development)
+│       │   ├── design/                 #     graphics apps (Design)
 │       │   └── wayland/                #     utils
 │       ├── services/                   #   rclone-google-drive
 │       ├── zsh/                        #   Shell + p10k + plugins
@@ -111,13 +113,14 @@ nix-config/
 
 ### Perfiles (DRY)
 
-Todo lo compartido entre hosts vive en `modules/profiles/`. Los hosts solo importan 2 archivos (uno para NixOS y otro para Home Manager):
+Todo lo compartido entre hosts vive en `modules/profiles/`. Cada configuración NixOS combina hardware, Common, work modes y el perfil específico del host; Home Manager combina los perfiles Common y host.
 
 ```nix
 # hosts/pc-wwd/configuration.nix — escritorio con virtualización extendida
 imports = [
   ./hardware-configuration.nix
   ../../modules/profiles/common-nixos.nix
+  ../../modules/profiles/work-modes.nix
   ../../modules/profiles/desktop-nixos.nix
 ];
 
@@ -133,6 +136,7 @@ imports = [
 imports = [
   ./hardware-configuration.nix
   ../../modules/profiles/common-nixos.nix
+  ../../modules/profiles/work-modes.nix
   ../../modules/profiles/laptop-nixos.nix
 ];
 
@@ -142,6 +146,10 @@ imports = [
   ../../modules/profiles/laptop-home.nix
 ];
 ```
+
+WinApps y su launcher se instalan actualmente como paquetes NixOS en ambos hosts desde `flake/outputs.nix`. El módulo Home Manager de `modules/home/desktop/winapps/` no forma parte de los imports activos.
+
+Los módulos Brave, Firefox, Zed, Docker, Android, libvirt, Waydroid y Niri se conservan como código inactivo y no se importan en los perfiles actuales. No se activan de forma implícita al agregar aplicaciones o especializaciones; cualquier activación debe ser una decisión separada por host o modo.
 
 ### Banderas dinámicas (`specialArgs`)
 
@@ -164,8 +172,9 @@ nixosConfigurations = {
 
 | Bandera | Efecto |
 |---|---|
-| `isLaptop = true` | Activa `tlp` (batería), `bluetooth`, `fail2ban`, `wifi`, TPM2 auto-unlock |
+| `isLaptop = true` | Activa `tlp` (batería), `bluetooth` y `boot.initrd.systemd`; el enrolamiento LUKS/TPM2 requiere un paso manual post-instalación |
 | `isLaptop = false` | Activa `auditd`, kernel `lockdown=confidentiality` |
+| Ambos hosts | NetworkManager/Wi-Fi y fail2ban se configuran desde el perfil común |
 | `hostname` | Configura displays de Sway por host |
 
 ### Seguridad (Security-First)
@@ -178,7 +187,7 @@ Hardening CIS Benchmark activado por defecto en ambos hosts:
 | `enableKernelHardening` | ✅ | ✅ |
 | `enableFirewallStrict` | ✅ | ✅ |
 | `enableAuditd` | ✅ | ❌ (ahorro batería) |
-| `enableFail2ban` | ❌ | ✅ (redes públicas) |
+| `enableFail2ban` | ✅ | ✅ (configurado en `common-nixos.nix`) |
 
 Secretos gestionados con **sops-nix** (AGE encryption). Nunca se commitean credenciales en texto plano.
 

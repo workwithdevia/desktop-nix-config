@@ -1,11 +1,5 @@
 # Perfil: común — NixOS compartido entre todos los hosts
-{
-  config,
-  isLaptop,
-  lib,
-  username,
-  ...
-}: {
+{isLaptop, ...}: {
   imports = [
     ../nixos
     ../nixos/desktop
@@ -25,25 +19,5 @@
     enableAuditd = !isLaptop;
     enableOpenSSH = true;
     enableFail2ban = true;
-  };
-
-  system.nixos.label = "NixOS-${config.system.nixos.version}-Common";
-
-  specialisation = {
-    Development.configuration = {
-      system.nixos.label = lib.mkForce "NixOS-${config.system.nixos.version}-Development";
-      home-manager.users.${username}.imports = [
-        ../home/packages/dev/compilers.nix
-        ../home/packages/dev/lsp.nix
-        ../home/packages/apps/develop.nix
-      ];
-    };
-
-    Design.configuration = {
-      system.nixos.label = lib.mkForce "NixOS-${config.system.nixos.version}-Design";
-      home-manager.users.${username}.imports = [
-        ../home/packages/apps/graphics.nix
-      ];
-    };
   };
 }
