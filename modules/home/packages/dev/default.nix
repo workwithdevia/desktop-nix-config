@@ -1,7 +1,7 @@
 {
   imports = [
     ./compilers.nix
-    ./containers.nix
     ./lsp.nix
+    ./apps.nix
   ];
 }

@@ -53,14 +53,6 @@
         SUBSYSTEM=="usb", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="c0ca", TAG+="uaccess"
       '';
     };
-
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      wireplumber.enable = true;
-    };
   };
 
   xdg.portal = {

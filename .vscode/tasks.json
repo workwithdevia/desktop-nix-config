@@ -1,31 +1,53 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Construir sistema (nom)",
-            "type": "shell",
-            "command": "nom build .#nixosConfigurations.pc-wwd.config.system.build.toplevel",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new",
-                "clear": true
-            }
-        },
-        {
-            "label": "Formatear todo (alejandra)",
-            "type": "shell",
-            "command": "alejandra .",
-            "problemMatcher": []
-        },
-        {
-            "label": "Analizar código (statix)",
-            "type": "shell",
-            "command": "statix check",
-            "problemMatcher": []
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Construir sistema (nom)",
+      "type": "shell",
+      "command": "nom build .#nixosConfigurations.pc-wwd.config.system.build.toplevel",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Construir hosts y especializaciones (nom)",
+      "type": "shell",
+      "command": "nom build path:.#nixosConfigurations.pc-wwd.config.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Design.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Design.configuration.system.build.toplevel --no-link",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Validar flake (nix)",
+      "type": "shell",
+      "command": "nix flake check path:.",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
+      "label": "Formatear todo (alejandra)",
+      "type": "shell",
+      "command": "alejandra .",
+      "problemMatcher": []
+    },
+    {
+      "label": "Analizar código (statix)",
+      "type": "shell",
+      "command": "statix check",
+      "problemMatcher": []
+    }
+  ]
 }
