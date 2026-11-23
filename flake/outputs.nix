@@ -144,10 +144,9 @@ inputs: let
     designSystemPackages = packageNames designConfig.environment.systemPackages;
     developmentOnlyPackages = [
       "cargo"
-      "calepin"
       "clippy"
       "marimo"
-      "python3"
+      "python315"
       "pytest"
       "ruff"
       "rust-analyzer"

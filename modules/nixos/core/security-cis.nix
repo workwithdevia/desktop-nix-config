@@ -37,19 +37,14 @@ in {
       };
     };
 
-    boot.kernelParams = lib.mkIf cfg.enableKernelHardening (
-      [
-        "mitigations=auto"
-        "slab_nomerge"
-        "page_poison=1"
-        "init_on_alloc=1"
-        "init_on_free=1"
-        "random.trust_cpu=off"
-      ]
-      ++ lib.optionals (!isLaptop) [
-        "lockdown=confidentiality"
-      ]
-    );
+    boot.kernelParams = lib.mkIf cfg.enableKernelHardening [
+      "mitigations=auto"
+      "slab_nomerge"
+      "page_poison=1"
+      "init_on_alloc=1"
+      "init_on_free=1"
+      "random.trust_cpu=off"
+    ];
 
     networking.firewall = lib.mkIf cfg.enableFirewallStrict {
       enable = true;

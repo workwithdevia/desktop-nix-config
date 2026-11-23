@@ -16,12 +16,11 @@
     netcat-openbsd
     nikto
     nuclei
-    semgrep
     seclists
     sqlmap
     syft
     trufflehog
-    python3Packages.scapy
+    python315Packages.scapy
     tcpdump
     testssl
     trivy
