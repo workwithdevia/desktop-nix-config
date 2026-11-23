@@ -7,6 +7,7 @@ Refactor the workstation environment into a clear, reproducible system with two 
 - **Common**: the normal system configuration and default boot entry.
 - **Development**: Common plus development tools.
 - **Design**: Common plus design and graphics applications.
+- **SecurityAudit**: Common plus offensive security and network-attack tooling for penetration testing, exploit development, credential attacks, and target assessment; it excludes Development and Design packages.
 
 Use NixOS `specialisation` so Development and Design extend the same host configuration and appear as selectable system generations at boot. Keep the normal system as the default and label it Common where supported. Do not duplicate the Common configuration to create another identical generation. Keep host hardware, services, and user applications in their existing ownership layers.
 
@@ -26,13 +27,22 @@ Use NixOS `specialisation` so Development and Design extend the same host config
 | Scope | Active contents | Refactor rule |
 |---|---|---|
 | Common Home Manager | Shared CLI and network tools, Wayland utilities, fonts, media (`ffmpeg`, VLC), Bitwarden, qBittorrent, `podman-compose`, shell/terminal/editor configuration, Neovim, VS Code, Chromium, DMS | This is the actual baseline on both hosts. Decide explicitly whether media, office, and torrent apps belong on every host; do not move them just because their category names look optional. |
-| Development specialisation | `modules/home/packages/dev/`: compiler/toolchain, LSP/build tools, and DBeaver from `apps.nix` | Import the Development bundle only through the selected work-mode specialisation. Keep role apps out of Common unless another active Common feature requires them. |
-| Design specialisation | `modules/home/packages/design/default.nix`: Inkscape and GIMP | Import the Design bundle only through the selected work-mode specialisation. |
+| Development specialisation | `modules/home/packages/dev/`: Rust (`cargo`, `rustc`, `rust-analyzer`, `rustfmt`, `clippy`), Python/data tools (`python3`, `uv`, Ruff, Pytest, marimo), SQLite, and Typst/Calepin with Tinymist | Academic programming, computational notebooks, technical writing, and data analysis. Keep unrelated language toolchains and optional database GUIs out unless requested. |
+| Design specialisation | `modules/home/packages/design/default.nix`: LibreCAD for 2D CAD, FreeCAD for parametric 3D engineering models, GIMP for raster graphics, and Inkscape for vector diagrams | Engineering and academic design tools for agroindustrial work, technical figures, and diagrams. |
+| SecurityAudit specialisation | `modules/home/packages/security-audit/default.nix`: ClamAV, Gitleaks, Grype, Lynis, Scapy, Semgrep, Syft, Trivy, YARA, tcpdump, and Wireshark CLI; inherits Common including Neovim | Offensive security work mode: source and dependency analysis, exploit and payload development, credential and password attacks, protocol exploitation, and traffic inspection. Exclude Development and Design packages. |
 | Common NixOS runtime | Core services and desktop session plus Podman with Docker compatibility | Keep OS services and runtimes in NixOS; user-facing applications belong in Home Manager. Podman and `podman-compose` stay in Common because DMS Docker Manager is enabled there. |
 
-`modules/home/packages/default.nix` imports CLI, common apps, Wayland, fonts, and `dev/containers.nix`. `apps/default.nix` intentionally imports only media, office, and torrent modules. The Development bundle at `dev/default.nix` imports compilers, LSP, and `dev/apps.nix`, and deliberately excludes containers because Common already supplies them. The Design bundle is isolated in `design/default.nix`.
+SecurityAudit is the offensive security work mode: penetration testing, exploit and payload development, credential and password attacks, network and protocol exploitation, vulnerability research, reverse engineering, and traffic capture and manipulation. Target CTF platforms, deliberately vulnerable applications, corporate assessment ranges, and production systems under engagement.
 
-`modules/profiles/work-modes.nix` owns the Common label plus Development and Design NixOS specialisations and selects the corresponding Home Manager bundle. Each host imports it alongside `common-nixos.nix` and its own desktop/laptop profile. `common-nixos.nix` owns shared services and no longer defines work-mode labels or specialisations.
+`modules/home/packages/default.nix` imports CLI, common apps, Wayland, fonts, and `dev/containers.nix`. `apps/default.nix` intentionally imports only media, office, and torrent modules. The Development bundle at `dev/default.nix` imports its Rust/Python toolchain, marimo, and Typst/Calepin authoring tools; it deliberately excludes containers because Common already supplies them. The optional DBeaver module is inactive. The Design bundle is isolated in `design/default.nix` and contains engineering CAD tools.
+
+`modules/profiles/work-modes.nix` owns the Common label plus Development, Design, and SecurityAudit NixOS specialisations and selects the corresponding Home Manager bundle. Each host imports it alongside `common-nixos.nix` and its own desktop/laptop profile. `common-nixos.nix` owns shared services and no longer defines work-mode labels or specialisations.
+
+The `role-boundaries` check also asserts that SecurityAudit includes ClamAV, Gitleaks, Grype, Lynis, Scapy, Semgrep, Syft, Trivy, YARA, tcpdump, and Wireshark CLI, excludes all Development and Design role packages, and preserves parity of NixOS system package lists.
+
+`modules/nixos/core/user.nix` keeps only `git` and Neovim as user-facing system packages. Development-only `uv` is in the Home Manager Development bundle, not in Common's NixOS system package set.
+
+`flake/outputs.nix` exposes a `role-boundaries` check under `checks.x86_64-linux`. It evaluates both hosts and asserts distinct Common/Development/Design labels, Home Manager activation packages for every mode, the full direct Development/Design package sets, role-app exclusion from Common and the opposite mode, and identical NixOS system package lists across all modes.
 
 Common currently needs `gcc`, `lua-language-server`, and `nil` for the Neovim configuration, and `direnv` is enabled by the shared Home Manager configuration. Those are shared-feature dependencies, not a reason to classify all Development tooling as Common. The duplicate declarations in the Development compiler/LSP modules have been removed; do not reintroduce them.
 
@@ -48,12 +58,15 @@ Common currently needs `gcc`, `lua-language-server`, and `nil` for the Neovim co
 ## Current Implementation
 
 - `modules/profiles/work-modes.nix` defines the Common base label and the Development/Design specialisations for both hosts; `common-nixos.nix` contains shared system services only.
-- Development applications are organized under `modules/home/packages/dev/`; its bundle imports compilers, LSP/build tools, and DBeaver through `apps.nix`.
+- Development tools are organized under `modules/home/packages/dev/`; its active bundle covers Rust, Python, marimo, Typst/Calepin academic authoring, and SQLite, without unrelated language toolchains or optional database GUIs.
+- `uv` is installed only by the Development Home Manager bundle, not Common's NixOS system package set.
 - Duplicate Development entries for packages already supplied by Common (`gcc`, `direnv`, `lua-language-server`, and `nil`) were removed while retaining the Common dependencies required by Neovim and direnv.
-- Design applications are organized under `modules/home/packages/design/default.nix` and selected through the Design Home Manager imports.
+- Engineering CAD and academic graphics tools are organized under `modules/home/packages/design/default.nix` and selected through the Design Home Manager imports.
+- SecurityAudit is a fourth specialisation with ClamAV, Gitleaks, Grype, Lynis, Scapy, Semgrep, Syft, Trivy, YARA, tcpdump, and Wireshark CLI for offensive security work: target and surface assessment, exploit and payload development, credential attacks, protocol exploitation, and traffic capture and manipulation; it inherits Common, including Neovim.
 - The default generation is labeled Common; both specialisations use distinct, versioned NixOS labels.
 - PipeWire is consolidated in the common audio module with PulseAudio compatibility, 32-bit ALSA, and WirePlumber retained.
 - WinApps remains installed as a system package on both hosts from `flake/outputs.nix`; its Home Manager module remains inactive and the README reflects this.
+- A `role-boundaries` flake check protects host specialisations, labels, Home Manager activation, the full Development/Design package sets, role exclusions, and parity of NixOS system packages across modes.
 - Alejandra, `statix check`, and editor diagnostics pass. `nix flake check path:.` and a path-based build of both hosts plus all four specialisations pass without the former `pkgs.system` deprecation warning.
 
 ## Refactor Principles
@@ -95,7 +108,7 @@ Keep these ownership boundaries:
 6. **Completed:** Consolidate PipeWire settings in the shared audio module while preserving the prior effective options.
 7. **Completed:** Align README host-security, Wi-Fi, TPM2, and WinApps descriptions with the active imports. Continue reconciling other documentation only when confirmed against configuration.
 8. **Completed:** Keep boot labels distinct and verify Home Manager activation in each selected generation; all host/mode toplevels build.
-9. **Completed:** Alejandra, statix, `nix flake check path:.`, and explicit builds of both base hosts and all four specialisations pass without the former `pkgs.system` deprecation warning.
+9. **Completed:** Alejandra, statix, `nix flake check path:.` (including `role-boundaries`), and explicit builds of both base hosts and all four specialisations pass without the former `pkgs.system` deprecation warning. The role check covers all Development tools, Design apps, cross-mode app exclusions, and NixOS system package parity.
 
 ## Repository Context
 
@@ -106,32 +119,33 @@ Keep these ownership boundaries:
 - `modules/home/packages/default.nix` imports shared CLI, Common apps, Wayland, fonts, and the Common container package module.
 - `modules/home/packages/dev/default.nix` is the Development bundle; `apps.nix` owns DBeaver, while compiler and LSP files own toolchains/build support.
 - `modules/home/packages/design/default.nix` is the Design bundle for graphics applications.
+- `modules/home/packages/security-audit/default.nix` is the SecurityAudit bundle and adds ClamAV, Gitleaks, Grype, Lynis, Scapy, Semgrep, Syft, Trivy, YARA, tcpdump, and Wireshark CLI only.
 - `modules/home/packages/apps/default.nix` is the Common app bundle and currently includes media, office, and torrent, but not Development or Design.
 - `modules/home/default.nix` imports Chromium and the shared editor/shell configuration; the Brave, Firefox, and Zed modules are not part of the active import graph.
 - `modules/home/desktop/default.nix` imports Sway and DankMaterialShell, not the WinApps Home Manager module.
 - `modules/nixos/virtualisation/podman.nix` is active from Common; Docker, Android, libvirt, and Waydroid are not active from current host/profile imports.
 
-Check the current imports before editing: role-specific package modules are selected by `work-modes.nix`, not by the shared package imports. Do not make Development or Design packages part of Common by importing every package module into the baseline.
+Check the current imports before editing: role-specific package modules are selected by `work-modes.nix`, not by the shared package imports. Do not make Development, Design, or SecurityAudit packages part of Common by importing every package module into the baseline.
 
 ## Implementation Requirements
 
 1. Keep the existing host, hardware, security, encryption, and common desktop configuration inherited by every boot choice.
-2. Define Development and Design as NixOS specialisations in `modules/profiles/work-modes.nix`, imported by both hosts. Do not make laptop-only or desktop-only services apply to the other host.
+2. Define Development, Design, and SecurityAudit as NixOS specialisations in `modules/profiles/work-modes.nix`, imported by both hosts. Do not make laptop-only or desktop-only services apply to the other host.
 3. Keep user applications in Home Manager package modules. Select the appropriate Home Manager package set from each NixOS specialisation so switching boot generations also selects the matching user environment; verify this behavior rather than assuming system-level package changes affect Home Manager.
-4. Development should include the compiler, LSP, and development-app modules through `modules/home/packages/dev/default.nix`. Design should include graphics through `modules/home/packages/design/default.nix`. Do not add container tools a second time: they are already part of Common. Common should include neither role-specific set unless it is already part of the shared baseline.
-5. Give the boot entries clear, stable names: Common, Development, and Design. Preserve the normal system as the default unless the repository already specifies another default policy.
+4. Development should stay focused on the Rust/Python academic workflow, including marimo, Typst/Calepin, Tinymist, and SQLite. Design should provide engineering CAD through LibreCAD and FreeCAD, plus GIMP and Inkscape for academic graphics and diagrams. Keep unrelated apps out unless requested. SecurityAudit adds ClamAV, Gitleaks, Grype, Lynis, Scapy, Semgrep, Syft, Trivy, YARA, tcpdump, and Wireshark CLI beyond Common as a full offensive security toolkit. Do not add container tools a second time: they are already part of Common.
+5. Give the boot entries clear, stable names: Common, Development, Design, and SecurityAudit. Preserve the normal system as the default unless the repository already specifies another default policy.
 6. Avoid changing package contents, secrets, unrelated host behavior, or the existing profile architecture beyond what is required to select these variants.
 
 ## Validation
 
 - Run `alejandra` on changed Nix files and `statix check`.
 - Run `nix flake check`.
-- Build the affected host system generations, including both hosts if the specialisations are shared.
+- Build both base host systems and every specialisation on both hosts.
 - Confirm the evaluated configuration exposes the expected specialisations and that the boot menu labels are distinct.
-- Confirm Common does not gain Development or Design packages, and that each role gets its intended Home Manager package set.
+- Confirm Common does not gain Development, Design, or SecurityAudit-only packages, and that every mode gets its intended Home Manager package set.
 - Common may retain packages required by active shared features, specifically Neovim's compiler/LSP dependencies and direnv; verify against imports before calling them role leakage.
-- Confirm Development includes its toolchain/LSP/apps without duplicate declarations, and Design includes graphics apps without Development-only packages.
-- Confirm each host profile still contributes only its own host behavior; Development/Design must not change laptop/desktop services or hardware settings.
+- Confirm Development includes its toolchain/LSP/apps without Tauri, Design includes graphics without Development tools, and SecurityAudit adds its offensive toolchain — target and surface assessment, exploit and payload development, credential attacks, protocol exploitation, and traffic capture and manipulation — without Development or Design packages.
+- Confirm each host profile still contributes only its own host behavior; work modes must not change laptop/desktop services or hardware settings.
 - Report any build or validation failure that predates the change separately; do not silently broaden the task to fix unrelated issues.
 
 Follow the repository-wide conventions in `.clinerules` while implementing this brief.

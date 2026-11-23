@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    inkscape
+    freecad
     gimp
+    inkscape
+    librecad
   ];
 }

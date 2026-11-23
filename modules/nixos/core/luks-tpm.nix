@@ -6,10 +6,12 @@
   isLaptop,
   ...
 }: {
-  boot.initrd.systemd = lib.mkIf isLaptop {
+  /*
+    boot.initrd.systemd = lib.mkIf isLaptop {
     enable = true;
     emergencyAccess = true;
   };
+  */
 
   # Nota: La configuración de crypttab requiere ejecutar post-instalación:
   # $ sudo systemd-cryptenroll --tpm2-device=auto /dev/<root-partition>

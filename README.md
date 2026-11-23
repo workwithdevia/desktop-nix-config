@@ -48,7 +48,7 @@ nix-config/
 │   │   ├── desktop-home.nix            #   Extras Home escritorio (rclone, multi-monitor)
 │   │   ├── laptop-nixos.nix            #   Extras NixOS portátil (wifi, tlp, bluetooth)
 │   │   ├── laptop-home.nix             #   Extras Home portátil (display eDP-1)
-│   │   └── work-modes.nix              #   Specialisations de arranque Development y Design
+│   │   └── work-modes.nix              #   Common, Development, Design y SecurityAudit
 │   ├── nixos/                          # Módulos NixOS (system-level)
 │   │   ├── default.nix
 │   │   ├── core/                       #   locale, user, audio, nix-settings, security, wifi, luks-tpm
@@ -93,6 +93,7 @@ nix-config/
 │       │   ├── cli/                    #     core, network
 │       │   ├── dev/                    #     compilers, lsp, apps (Development)
 │       │   ├── design/                 #     graphics apps (Design)
+│       │   ├── security-audit/         #     ClamAV, Lynis, Trivy (SecurityAudit)
 │       │   └── wayland/                #     utils
 │       ├── services/                   #   rclone-google-drive
 │       ├── zsh/                        #   Shell + p10k + plugins
@@ -150,6 +151,8 @@ imports = [
 WinApps y su launcher se instalan actualmente como paquetes NixOS en ambos hosts desde `flake/outputs.nix`. El módulo Home Manager de `modules/home/desktop/winapps/` no forma parte de los imports activos.
 
 Los módulos Brave, Firefox, Zed, Docker, Android, libvirt, Waydroid y Niri se conservan como código inactivo y no se importan en los perfiles actuales. No se activan de forma implícita al agregar aplicaciones o especializaciones; cualquier activación debe ser una decisión separada por host o modo.
+
+Los modos de arranque disponibles son Common, Development, Design y SecurityAudit. SecurityAudit hereda Common (incluido Neovim) y añade ClamAV, Lynis y Trivy para análisis local defensivo de archivos, configuración y sistemas de archivos/imágenes de contenedor. No incluye herramientas de Development ni Design.
 
 ### Banderas dinámicas (`specialArgs`)
 

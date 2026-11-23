@@ -31,22 +31,22 @@
     # ==========================================================
 
     dms = {
-      url = "github:AvengeMedia/DankMaterialShell/stable";
+      url = "github:duxlabs-dev/dux-shell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dms-plugin-registry = {
-      url = "github:AvengeMedia/dms-plugin-registry";
+      url = "github:duxlabs-dev/dux-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     danksearch = {
-      url = "github:AvengeMedia/danksearch";
+      url = "github:duxlabs-dev/dux-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dankcalendar = {
-      url = "github:AvengeMedia/dankcalendar";
+      url = "github:duxlabs-dev/dux-calendar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -115,6 +115,16 @@
 
     zsh-system-clipboard = {
       url = "github:kutsan/zsh-system-clipboard";
+      flake = false;
+    };
+
+    parso-py315 = {
+      url = "github:davidhalter/parso/512e78c1a8f4968086af652394a9cd0a91c16e54";
+      flake = false;
+    };
+
+    jiter = {
+      url = "github:pydantic/jiter/v0.18.0";
       flake = false;
     };
   };

@@ -23,7 +23,6 @@
   environment.systemPackages = with pkgs; [
     git
     neovim
-    devenv
-    uv
+    python315
   ];
 }

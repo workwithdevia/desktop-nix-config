@@ -18,7 +18,7 @@
     {
       "label": "Construir hosts y especializaciones (nom)",
       "type": "shell",
-      "command": "nom build path:.#nixosConfigurations.pc-wwd.config.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Design.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Design.configuration.system.build.toplevel --no-link",
+      "command": "nom build path:.#nixosConfigurations.pc-wwd.config.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.Design.configuration.system.build.toplevel path:.#nixosConfigurations.pc-wwd.config.specialisation.SecurityAudit.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Development.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.Design.configuration.system.build.toplevel path:.#nixosConfigurations.pc-portatil.config.specialisation.SecurityAudit.configuration.system.build.toplevel --no-link",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

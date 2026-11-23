@@ -1,0 +1,33 @@
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    checksec
+    caido-desktop
+    clamav
+    exploitdb
+    ffuf
+    gitleaks
+    gobuster
+    grype
+    hashcat
+    hydra
+    john
+    lynis
+    metasploit
+    netcat-openbsd
+    nikto
+    nuclei
+    seclists
+    semgrep
+    sqlmap
+    syft
+    trufflehog
+    python315Packages.scapy
+    tcpdump
+    testssl
+    trivy
+    kics
+    wireshark-cli
+    yara
+    osv-scanner
+  ];
+}

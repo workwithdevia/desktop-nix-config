@@ -14,10 +14,10 @@
 
   boot = {
     initrd = {
-      availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
-      kernelModules = [];
+      availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+      kernelModules = ["dm-snapshot"];
     };
-    kernelModules = ["kvm-intel"];
+    kernelModules = ["kvm-intel" "dm-thin-pool"];
   };
 
   fileSystems."/" = {
@@ -28,15 +28,10 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/8DC5-D384";
     fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
+    options = ["fmask=0022" "dmask=0022"];
   };
 
-  swapDevices = [
-    {device = "/dev/disk/by-uuid/81c92b37-1c00-4511-966e-ad466179a219";}
-  ];
+  swapDevices = [];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

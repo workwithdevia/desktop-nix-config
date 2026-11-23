@@ -20,5 +20,12 @@
         ../home/packages/design
       ];
     };
+
+    SecurityAudit.configuration = {
+      system.nixos.label = lib.mkForce "NixOS-${config.system.nixos.version}-SecurityAudit";
+      home-manager.users.${username}.imports = [
+        ../home/packages/security-audit
+      ];
+    };
   };
 }

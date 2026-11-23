@@ -27,5 +27,6 @@
     "vm.vfs_cache_pressure" = 50;
   };
 
-  boot.kernelPackages = inputs.nix-cachyos-kernel.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages-cachyos-bore-lto-x86_64-v3;
+  #boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-x86_64-v3;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
