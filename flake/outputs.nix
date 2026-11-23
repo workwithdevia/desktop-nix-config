@@ -145,9 +145,7 @@ inputs: let
     developmentOnlyPackages = [
       "cargo"
       "clippy"
-      "marimo"
-      "python315"
-      "pytest"
+      "python3"
       "ruff"
       "rust-analyzer"
       "rustc"

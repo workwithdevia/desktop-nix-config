@@ -17,6 +17,7 @@
     nikto
     nuclei
     seclists
+    semgrep
     sqlmap
     syft
     trufflehog
